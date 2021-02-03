@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
+
+import filterObject from "../util/filterObj";
+import { getData, storeData } from "../data/localDataHelper";
 import StateJSON from "../reserve/states/AbbtoStates.json";
 
 export interface Props {
@@ -43,16 +46,15 @@ const FirstTime: React.FC<Props> = (props) => {
   }
 
   const fetchData = async () => {
-    let data = NaN;
+    let data: object = {};
     try {
       data = validateZip(search)
         ? await fetchCovidDataByZip(search)
         : await fetchCovidByState(search);
-    } catch (error) {
-      console.log("failed to fetch data", error);
-    }
+    } catch (error) {}
 
-    console.log(data);
+    const newData = await filterObject(data);
+    await storeData(newData);
   };
 
   return (
