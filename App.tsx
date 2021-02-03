@@ -7,6 +7,7 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 
 import FirstTime from "./src/screen/FirstTime";
+import FeedBack from "./src/screen/Feedback";
 import Home from "./src/screen/Home";
 import Login from "./src/screen/Login";
 
@@ -50,7 +51,7 @@ export default function App() {
         <BottomTab.Screen name="COVID" component={FirstTime} />
         <BottomTab.Screen name="News" component={Home} />
         <BottomTab.Screen name="Login" component={Login} />
-        <BottomTab.Screen name="FeedBack" component={Login} />
+        <BottomTab.Screen name="FeedBack" component={FeedBack} />
       </BottomTab.Navigator>
     </NavigationContainer>
   );

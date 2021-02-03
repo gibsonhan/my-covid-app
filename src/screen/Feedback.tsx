@@ -1,21 +1,24 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { openForm } from "../util/openFeedbackForm";
 
-export interface Props {
-  name: string;
-  test?: number;
-}
+const Feedback: React.FC<{}> = () => {
+  const handleOpenForm = () => openForm();
 
-const Feedback: React.FC<Props> = (props) => {
   return (
     <View style={styles.root}>
-      <Text>Feedback</Text>
+      <Text>Found a Bug? </Text>
+      <Text>or</Text>
+      <Text> Want a Feature </Text>
+      <Button title="Send me a Message" onPress={handleOpenForm} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   root: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
   },
