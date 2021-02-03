@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { fetchCovidData } from "../util/dataHelper/fetchCovidData";
+import { getData } from "../store/localDataHelper";
 
 const FirstTime: React.FC<{}> = (props) => {
   const [search, setSearchInput] = useState("");
-  const [showSearch, setShowSearch] = useState(true);
+  const [showData, setShowData] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
 
-  const fetchData = () => fetchCovidData(search);
+  const fetchData = async () => {
+    await fetchCovidData(search);
+    setShowSearch(true);
+    setShowData(JSON.stringify(await getData()));
+  };
+
   const setText = (text: string) => setSearchInput(text.toLowerCase());
 
   return (
     <View style={styles.root}>
-      {showSearch && (
-        <View style={styles.search}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter State or Zip Code"
-            onChangeText={setText}
-          />
-          <Button title="Search" onPress={fetchData} />
-        </View>
-      )}
+      {showSearch && <Text style={styles.text}>{showData}</Text>}
+      <View style={styles.search}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter State or Zip Code"
+          onChangeText={setText}
+        />
+        <Button title="Search" onPress={fetchData} />
+      </View>
     </View>
   );
 };
@@ -29,18 +35,23 @@ const FirstTime: React.FC<{}> = (props) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center",
+    justifyContent: "center",
+  },
+  text: {
+    width: 200,
+    flexShrink: 1,
   },
   textInput: {
     width: 200,
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
+    marginBottom: 20,
   },
   search: {
-    flexDirection: "row",
+    flexShrink: 1,
+    flexDirection: "column",
   },
 });
 

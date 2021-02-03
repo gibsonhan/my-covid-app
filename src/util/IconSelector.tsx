@@ -1,4 +1,5 @@
 //TODO Figure out why this does not work
+import React from "react";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import EntypoIcon from "react-native-vector-icons/Entypo";
@@ -10,7 +11,7 @@ interface OptionLabel {
   color?: string;
 }
 
-export default function IconSelecton(optionObj: OptionLabel): JSX.Element {
+function IconSelector(optionObj: OptionLabel): JSX.Element {
   const { routeName, focused, size, color } = optionObj;
 
   const JSXElement: { [key: string]: JSX.Element } = {
@@ -22,3 +23,5 @@ export default function IconSelecton(optionObj: OptionLabel): JSX.Element {
 
   return JSXElement[routeName];
 }
+
+export { IconSelector };

@@ -24,7 +24,7 @@ async function fetchCovidDataByZip(zipCode: string) {
   return body2;
 }
 
-export async function fetchCovidData(search: string) {
+async function fetchCovidData(search: string) {
   let data: object = {};
   try {
     data = validateZip(search)
@@ -35,3 +35,5 @@ export async function fetchCovidData(search: string) {
   const newData = await filterObject(data);
   await storeData(newData);
 }
+
+export { fetchCovidData };
