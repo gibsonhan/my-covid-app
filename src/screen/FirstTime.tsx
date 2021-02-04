@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  //TODO GOTTA practice DEM flexbox skills
   text: {
     width: 200,
     flexShrink: 1,
