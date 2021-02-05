@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+
 import * as firebase from "firebase";
+import { signInWithEmailAndPassword, signInWithFacebook, signInWithGoogle } from "util/accountHelper";
 
 // Optionally import the services that you want to use
 //import "firebase/auth";
@@ -12,6 +14,9 @@ import * as firebase from "firebase";
 const Account: React.FC<{}> = (props) => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   const firebaseConfig = {
     appId: "my-covid-app-b5e88",
     apiKey: "AIzaSyBaXjsFSSWCf-Lr3vSwkYgaQnUA4GFEgLs",
@@ -34,47 +39,16 @@ const Account: React.FC<{}> = (props) => {
     return subscriber;
   }, []);
 
-  const handleLogin = () => {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(() => {
-        // Signed in..
-        console.log("it worked");
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        // ...
-      });
-  };
-  const handleSignInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-    firebase.auth().languageCode = 'en';
+  const handleSignInWithEmailAndPassword = () => signInWithEmailAndPassword(email, password)
+  const handleSignInWithFB = () => signInWithFacebook()
+  const handleSignInWithGoogle = () => signInWithGoogle()
 
-    firebase.auth()
-  .signInWithPopup(provider)
-  .then((result) => {
-    /** @type {firebase.auth.OAuthCredential} */
-    var credential = result.credential;
-
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    var token = credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-    // ...
-  }).catch((error) => {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-    // ...
-  });
+  const handleSignOut = () => {
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
   }
   if (initializing) return null;
   if (!user) {
@@ -82,8 +56,10 @@ const Account: React.FC<{}> = (props) => {
       <View style={styles.root}>
         {console.log(user)}
         <Text>Hello</Text>
-
-        <Button title="Login" onPress={handleLogin} />
+        <TextInput />
+        <TextInput />
+        <Button title="Login" onPress={handleSignInWithEmailAndPassword} />
+        <Button title="Login with FB" onPress={handleSignInWithFB} />
         <Button title="Login With Google" onPress={handleSignInWithGoogle} />
       </View>
     );
@@ -91,6 +67,7 @@ const Account: React.FC<{}> = (props) => {
   return (
     <View>
       <Text>Welcome {user.email}</Text>
+      <Button title="sign out" onPress={handleSignOut} />
     </View>
   );
 };
