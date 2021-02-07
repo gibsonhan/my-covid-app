@@ -1,6 +1,17 @@
 //Need to import only firbase 
 import * as firebase from "firebase/app"
+import Toast from 'react-native-toast-message';
 
+function ToastMessage(type: string) {
+    return Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: `Fail to Login in with ${type}`,
+        text2: 'Please try again  👋 ',
+        visibilityTime: 3000,
+        topOffset: 30,
+    })
+}
 const isAppInit = firebase.apps.length > 0
 
 //TODO check if this actually work. 
@@ -14,9 +25,7 @@ async function signInWithEmailAndPassword(email: string, password: string) {
         console.log('login with email and password', response)
     }
     catch (error) {
-        const code = error.code;
-        const message = error.message;
-        console.log(code, message)
+        ToastMessage('Email and Password')
     }
 }
 async function signInWithGoogle() {
@@ -28,7 +37,7 @@ async function signInWithGoogle() {
         const { isNewUser }: boolean = response.additionalUserInfo
     }
     catch (error) {
-        console.log('error', error)
+        ToastMessage('Google')
         //TODO -> handle google styling and 
         //https://developers.google.com/identity/branding-guidelines
     }
@@ -42,7 +51,7 @@ async function signInWithFacebook() {
         console.log('what is response', response)
     }
     catch (error) {
-        console.log(error)
+        ToastMessage('Facebook')
     }
 }
 
@@ -54,7 +63,7 @@ async function signInWithTwitter() {
         console.log('what is response', response)
     }
     catch (error) {
-        console.log(error)
+        ToastMessage('Twitter')
     }
 }
 

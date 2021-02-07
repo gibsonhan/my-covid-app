@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 import * as firebase from "firebase";
+import Toast from 'react-native-toast-message'
 import { signInWithEmailAndPassword, signInWithFacebook, signInWithGoogle, signInWithTwitter } from "../util/accountHelper"
 
 // Optionally import the services that you want to use
@@ -63,7 +64,7 @@ const Account: React.FC<{}> = (props) => {
   if (!user) {
     return (
       <View style={styles.root}>
-        <Text>Hello</Text>
+        <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
         <TextInput style={styles.textInput} onChangeText={handleSetEmail} />
         <TextInput style={styles.textInput} onChangeText={hanldeSetPassword} />
         <Button title="Login" onPress={handleSignInWithEmailAndPassword} />
@@ -89,6 +90,13 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'grey',
     marginBottom: 10,
+  },
+  toast: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 0,
+    right: 0
   }
 });
 
