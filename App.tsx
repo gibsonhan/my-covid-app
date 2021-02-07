@@ -16,6 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <BottomTab.Navigator
+        initialRouteName="Login"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return IconSelector({

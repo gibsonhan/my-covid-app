@@ -5,81 +5,62 @@ const isAppInit = firebase.apps.length > 0
 
 //TODO check if this actually work. 
 async function signInWithEmailAndPassword(email: string, password: string) {
+    const inputIsValid = email.length > 5 && password.length > 5
     try {
-        if (!isAppInit) throw 'App was not initalized'
+        //TODO figure out where does firebaseConfig should live and where it should be initalized
+        //if (!isAppInit) throw 'App was not initalized'
+        if (!inputIsValid) throw { code: 'none', message: 'Email or Password Input is invalid' }
         let response = await firebase.auth().signInWithEmailAndPassword(email, password)
         console.log('login with email and password', response)
     }
     catch (error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        const code = error.code;
+        const message = error.message;
+        console.log(code, message)
     }
 }
-function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-    firebase.auth().languageCode = 'en';
-
-    firebase.auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-
-            /** @type {firebase.auth.OAuthCredential} */
-            var credential = result.credential;
-
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = credential.accessToken;
-            console.log(token, typeof token)
-            // The signed-in user info.
-            var user = result.user;
-            // ...
-        }).catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-            // ...
-            //TODO -> handle google styling and 
-            //https://developers.google.com/identity/branding-guidelines
-        });
+async function signInWithGoogle() {
+    try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/userinfo.email');
+        firebase.auth().languageCode = 'en';
+        const response = await firebase.auth().signInWithPopup(provider)
+        const { isNewUser }: boolean = response.additionalUserInfo
+    }
+    catch (error) {
+        console.log('error', error)
+        //TODO -> handle google styling and 
+        //https://developers.google.com/identity/branding-guidelines
+    }
 }
-function signInWithFacebook() {
-    var provider = new firebase.auth.FacebookAuthProvider();
-    provider.addScope('user_birthday');
-    firebase.auth().languageCode = 'en';
-    firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-            /** @type {firebase.auth.OAuthCredential} */
-            var credential = result.credential;
+async function signInWithFacebook() {
+    try {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        provider.addScope('email');
+        firebase.auth().languageCode = 'en';
+        const response = await firebase.auth().signInWithPopup(provider)
+        console.log('what is response', response)
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
 
-            // The signed-in user info.
-            var user = result.user;
-
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            var accessToken = credential?.accessToken;
-
-            // ...
-        })
-        .catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-
-            // ...
-        });
+async function signInWithTwitter() {
+    try {
+        const provider = new firebase.auth.TwitterAuthProvider();
+        firebase.auth().languageCode = 'en';
+        const response = await firebase.auth().signInWithPopup(provider)
+        console.log('what is response', response)
+    }
+    catch (error) {
+        console.log(error)
+    }
 }
 
 export {
     signInWithEmailAndPassword,
     signInWithFacebook,
-    signInWithGoogle
+    signInWithGoogle,
+    signInWithTwitter
 }

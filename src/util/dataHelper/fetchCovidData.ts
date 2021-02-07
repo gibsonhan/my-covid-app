@@ -30,7 +30,7 @@ async function fetchCovidData(search: string) {
     data = validateZip(search)
       ? await fetchCovidDataByZip(search)
       : await fetchCovidByState(search);
-  } catch (error) {}
+  } catch (error) { }
 
   const newData = await filterObject(data);
   await storeData(newData);
