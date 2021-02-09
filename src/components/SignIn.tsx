@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, TextPropTypes, View } from "react-native";
 
 import * as firebase from "firebase";
 import Toast from 'react-native-toast-message'
-import { signInWithEmailAndPassword, signInWithFacebook, signInWithGoogle, signInWithTwitter } from "../util/accountHelper"
+import {
+  signInWithEmailAndPassword,
+  signInWithFacebook,
+  signInWithGoogle,
+  signInWithTwitter
+} from "../util/accountHelper"
 
 // Optionally import the services that you want to use
 //import "firebase/auth";
@@ -14,9 +19,10 @@ import { signInWithEmailAndPassword, signInWithFacebook, signInWithGoogle, signI
 
 const Account: React.FC<{}> = (props) => {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(false)
 
   const firebaseConfig = {
     appId: "my-covid-app-b5e88",
@@ -27,21 +33,34 @@ const Account: React.FC<{}> = (props) => {
     //storageBucket: 'project-id.appspot.com',
     //messagingSenderId: 'sender-id',
     //measurementId: 'G-measurement-id',
-  };
+  }
 
+  //callback function that triggers when auth state changes. 
   function onAuthStateChanged(user: any) {
-    setUser(user);
+    if (user) {
+      setUser(user);
+    }
+    else {
+      setUser(false)
+    }
     if (initializing) setInitializing(false);
   }
 
   useEffect(() => {
     firebase.initializeApp(firebaseConfig);
-    const isAppInit = firebase.apps.length > 0
-    console.log(isAppInit)
-
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
+
+  useEffect(() => {
+    const currIdToken = firebase.auth().currentUser?.getIdToken()
+  }, [user])
+
+  function getFirebaseToken() {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = firebase.auth().onAuthStateChanged()
+    })
+  }
 
   const handleSignInWithEmailAndPassword = async () => {
     const resposne = await signInWithEmailAndPassword(email, password)
@@ -54,12 +73,21 @@ const Account: React.FC<{}> = (props) => {
   const handleSignInTwitter = async () => signInWithTwitter()
 
   const handleSignOut = () => {
-    firebase.auth().signOut().then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
+    try {
+      firebase.auth().signOut()
+    }
+    catch {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: `Failed To Log Out`,
+        text2: 'Please try again  👋 ',
+        visibilityTime: 3000,
+        topOffset: 30,
+      })
+    }
   }
+
   if (initializing) return null;
   if (!user) {
     return (
@@ -92,11 +120,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   toast: {
+    zIndex: 2,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
     left: 0,
-    right: 0
+    right: 0,
   }
 });
 

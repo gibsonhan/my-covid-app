@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { fetchCovidData } from "../util/dataHelper/fetchCovidData";
-import { getData } from "../store/localDataHelper";
+import { fetchCovidData } from "../../util/dataHelper/fetchCovidData";
+import { getData } from "../../store/localDataHelper";
 
 const FirstTime: React.FC<{}> = (props) => {
   const [search, setSearchInput] = useState("");
