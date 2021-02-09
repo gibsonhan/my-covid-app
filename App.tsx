@@ -19,7 +19,7 @@ export default function App() {
     <NavigationContainer>
       <RootStack.Navigator mode="modal" headerMode="none">
         <RootStack.Screen name="Main" component={BottomNav} />
-        <RootStack.Screen name="MyModal" component={RegisterModal} />
+        <RootStack.Screen name="Modal" component={RegisterModal} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

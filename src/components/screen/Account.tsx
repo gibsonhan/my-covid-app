@@ -8,7 +8,7 @@ interface AccountInterface {
     navigation: any
 }
 const Account: React.FC<AccountInterface> = ({ navigation }) => {
-    const handleNavigation = () => navigation.navigate('MyModal')
+    const handleNavigation = () => navigation.navigate('Modal')
     return (
         <View style={styles.root}>
             <SignIn />

@@ -67,7 +67,32 @@ async function signInWithTwitter() {
     }
 }
 
+async function registerWithEmailAndPassword(email: string, password: string, password2: string) {
+    const isEqual = password === password2
+    const isLongerThan6 = password.length > 5
+
+    try {
+        if (!isEqual || !isLongerThan6) throw 'Something Went Wrong'
+        const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        return true
+    }
+    catch (error) {
+        console.log(error)
+        Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: `Fail to Register. Password Inputs Must Match and Must Be Greater than 6 letters`,
+            text2: 'Please try again  👋 ',
+            visibilityTime: 3000,
+            topOffset: 30,
+        })
+    }
+
+    return false
+}
+
 export {
+    registerWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInWithFacebook,
     signInWithGoogle,

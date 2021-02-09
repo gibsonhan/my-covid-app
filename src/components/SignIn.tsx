@@ -10,12 +10,15 @@ import {
   signInWithTwitter
 } from "../util/accountHelper"
 
-// Optionally import the services that you want to use
-//import "firebase/auth";
-//import "firebase/database";
-//import "firebase/firestore";
-//import "firebase/functions";
-//import "firebase/storage";
+/*
+Optionally
+import the services that you want to use
+import "firebase/auth";
+import "firebase/database";
+import "firebase/firestore";
+import "firebase/functions";
+import "firebase/storage";
+*/
 
 const Account: React.FC<{}> = (props) => {
   const [initializing, setInitializing] = useState(true);
