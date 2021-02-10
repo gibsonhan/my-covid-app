@@ -1,6 +1,6 @@
 import './wdyr'; // <--- first import
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,12 +11,26 @@ import FeedBack from "./src/components/screen/Feedback";
 import Home from "./src/components/screen/Home";
 import RegisterModal from './src/components/modal/RegisterModal'
 
+import firebase from './src/util/firebaseHelper'
 import { IconSelector } from "./src/util/IconSelector";
 
 const RootStack = createStackNavigator()
 const BottomTab = createBottomTabNavigator();
 
 export default function App() {
+  const [user, setUser] = useState()
+  useEffect(() => {
+    let name = firebase.auth().currentUser
+    const subscriber = firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        console.log('no user', user)
+      }
+      else {
+        console.log('sup boomer', user)
+      }
+    })
+  }, [])
+
   return (
     <NavigationContainer>
       <RootStack.Navigator mode="modal" headerMode="none">
@@ -30,7 +44,7 @@ export default function App() {
 function BottomNav() {
   return (
     <BottomTab.Navigator
-      initialRouteName="Login"
+      //initialRouteName="Login"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           return IconSelector({
@@ -48,7 +62,7 @@ function BottomNav() {
     >
       <BottomTab.Screen name="COVID" component={FirstTime} />
       <BottomTab.Screen name="News" component={Home} />
-      <BottomTab.Screen name="Login" component={Account} />
+      <BottomTab.Screen name="Account" component={Account} />
       <BottomTab.Screen name="FeedBack" component={FeedBack} />
     </BottomTab.Navigator>
   )

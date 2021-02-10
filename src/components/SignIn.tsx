@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, TextPropTypes, View } from "react-native";
 
-import * as firebase from "firebase";
+import firebase from '../util/firebaseHelper'
 import Toast from 'react-native-toast-message'
 import {
   signInWithEmailAndPassword,
@@ -10,33 +10,11 @@ import {
   signInWithTwitter
 } from "../util/accountHelper"
 
-/*
-Optionally
-import the services that you want to use
-import "firebase/auth";
-import "firebase/database";
-import "firebase/firestore";
-import "firebase/functions";
-import "firebase/storage";
-*/
-
 const Account: React.FC<{}> = (props) => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(false)
-
-  const firebaseConfig = {
-    appId: "my-covid-app-b5e88",
-    apiKey: "AIzaSyBaXjsFSSWCf-Lr3vSwkYgaQnUA4GFEgLs",
-    authDomain: "my-covid-app-b5e88.firebaseapp.com",
-    databaseURL: "https://my-covid-app-b5e88-default-rtdb.firebaseio.com/",
-    projectId: "project-id",
-    //storageBucket: 'project-id.appspot.com',
-    //messagingSenderId: 'sender-id',
-    //measurementId: 'G-measurement-id',
-  }
 
   //callback function that triggers when auth state changes. 
   function onAuthStateChanged(user: any) {
@@ -50,7 +28,6 @@ const Account: React.FC<{}> = (props) => {
   }
 
   useEffect(() => {
-    firebase.initializeApp(firebaseConfig);
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
@@ -58,12 +35,6 @@ const Account: React.FC<{}> = (props) => {
   useEffect(() => {
     const currIdToken = firebase.auth().currentUser?.getIdToken()
   }, [user])
-
-  function getFirebaseToken() {
-    return new Promise((resolve, reject) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged()
-    })
-  }
 
   const handleSignInWithEmailAndPassword = async () => {
     const resposne = await signInWithEmailAndPassword(email, password)
