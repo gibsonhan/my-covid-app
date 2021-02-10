@@ -10,7 +10,7 @@ import {
   signInWithTwitter
 } from "../util/accountHelper"
 
-const Account: React.FC<{}> = (props) => {
+const Account: React.FC<{}> = ({ navigation }: any) => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(false);
   const [email, setEmail] = useState('');
@@ -20,6 +20,7 @@ const Account: React.FC<{}> = (props) => {
   function onAuthStateChanged(user: any) {
     if (user) {
       setUser(user);
+      navigation.navigate('Dashboard')
     }
     else {
       setUser(false)
