@@ -11,10 +11,8 @@ interface OptionLabel {
   color?: string;
 }
 
-function IconSelector(optionObj: OptionLabel): JSX.Element {
+function iconSelector(optionObj: OptionLabel): JSX.Element {
   const { routeName, focused, size, color } = optionObj;
-
-  console.log(routeName)
 
   const JSXElement: { [key: string]: JSX.Element } = {
     ["COVID"]: <MaterialIcon name="coronavirus" size={size} color={color} />,
@@ -27,4 +25,4 @@ function IconSelector(optionObj: OptionLabel): JSX.Element {
   return JSXElement[routeName];
 }
 
-export { IconSelector };
+export { iconSelector };

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, TextPropTypes, View } from "react-native";
 
+import { Context } from '../store/AppContext'
 import firebase from '../util/firebaseHelper'
 import Toast from 'react-native-toast-message'
 import {
@@ -11,31 +12,27 @@ import {
 } from "../util/accountHelper"
 
 const Account: React.FC<{}> = ({ navigation }: any) => {
+  const store = useContext(Context)
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { SIGN_IN } = store.DISPATCH
   //callback function that triggers when auth state changes. 
-  function onAuthStateChanged(user: any) {
-    if (user) {
-      setUser(user);
-      navigation.navigate('Dashboard')
-    }
-    else {
-      setUser(false)
-    }
+
+  async function onAuthStateChanged(user: any) {
     if (initializing) setInitializing(false);
+    if (user) {
+      const currIdToken = await firebase.auth().currentUser?.getIdToken()
+      await SIGN_IN(currIdToken)
+    }
   }
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
+    return () => subscriber;
   }, []);
-
-  useEffect(() => {
-    const currIdToken = firebase.auth().currentUser?.getIdToken()
-  }, [user])
 
   const handleSignInWithEmailAndPassword = async () => {
     const resposne = await signInWithEmailAndPassword(email, password)

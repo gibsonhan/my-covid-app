@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
+import { Context } from '../../store/AppContext'
 import { fetchCovidData } from "../../util/dataHelper/fetchCovidData";
 import { getData } from "../../store/localDataHelper";
 
@@ -12,10 +13,13 @@ const FirstTime: React.FC<{}> = (props) => {
   const fetchData = async () => {
     await fetchCovidData(search);
     setShowSearch(true);
-    setShowData(JSON.stringify(await getData()));
+    setShowData(JSON.stringify(await getData('test')));
   };
 
-  const setText = (text: string) => setSearchInput(text.toLowerCase());
+  const setText = (text: string) => {
+    setSearchInput(text.toLowerCase());
+  }
+  const store = useContext(Context)
 
   return (
     <View style={styles.root}>
@@ -25,6 +29,7 @@ const FirstTime: React.FC<{}> = (props) => {
           style={styles.textInput}
           placeholder="Enter State or Zip Code"
           onChangeText={setText}
+          value={search}
         />
         <Button title="Search" onPress={fetchData} />
       </View>

@@ -1,16 +1,20 @@
-import React from "react";
-import firebase from '../../util/firebaseHelper'
+import React, { useContext } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
-export interface Props {
-    name: string;
-    test?: number;
-}
+import { Context } from '../../store/AppContext'
+import firebase from '../../util/firebaseHelper'
+import Toast from 'react-native-toast-message'
 
-const Dashboard: React.FC<Props> = ({ navigation }: any) => {
-    const handleSignOut = () => {
+
+
+const Dashboard: React.FC<{}> = ({ navigation }: any) => {
+    const store = useContext(Context)
+    const { SIGN_OUT } = store.DISPATCH
+    const handleSignOut = async () => {
         try {
-            firebase.auth().signOut()
+            let response = await firebase.auth().signOut()
+            console.log('what is the response', response)
+            SIGN_OUT()
             navigation.navigate('COVID')
         }
         catch {
