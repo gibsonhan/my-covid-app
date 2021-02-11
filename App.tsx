@@ -9,7 +9,7 @@ import { AppContext, Context } from './src/store/AppContext'
 import Account from "./src/components/screen/Account";
 import Dashboard from "./src/components/screen/Dashboard";
 import FirstTime from "./src/components/screen/FirstTime";
-import FeedBack from "./src/components/screen/Feedback";
+import Feedback from "./src/components/screen/Feedback";
 import Home from "./src/components/screen/Home";
 import RegisterModal from './src/components/modal/RegisterModal'
 //functions
@@ -43,9 +43,9 @@ export default function App() {
           }}
         >
           <BottomTab.Screen name="COVID" component={FirstTime} />
-          <BottomTab.Screen name="News" component={Home} />
+          <BottomTab.Screen name="Home" component={Home} />
           <BottomTab.Screen name="Dashboard" component={Dashboard} />
-          <BottomTab.Screen name="FeedBack" component={FeedBack} />
+          <BottomTab.Screen name="Feedback" component={Feedback} />
         </BottomTab.Navigator>
       )
     }
@@ -68,9 +68,9 @@ export default function App() {
         }}
       >
         <BottomTab.Screen name="COVID" component={FirstTime} />
-        <BottomTab.Screen name="News" component={Home} />
+        <BottomTab.Screen name="Home" component={Home} />
         <BottomTab.Screen name="Login" component={Account} />
-        <BottomTab.Screen name="FeedBack" component={FeedBack} />
+        <BottomTab.Screen name="Feedback" component={Feedback} />
       </BottomTab.Navigator>
     )
   }

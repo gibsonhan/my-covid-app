@@ -16,7 +16,7 @@ function iconSelector(optionObj: OptionLabel): JSX.Element {
 
   const JSXElement: { [key: string]: JSX.Element } = {
     ["COVID"]: <MaterialIcon name="coronavirus" size={size} color={color} />,
-    ["News"]: <EntypoIcon name="line-graph" size={size} color={color} />,
+    ["Home"]: <EntypoIcon name="line-graph" size={size} color={color} />,
     ["Login"]: <AntIcon name="login" size={size} color={color} />,
     ["Dashboard"]: <MaterialIcon name="account-box-outline" size={size} color={color} />,
     ["Feedback"]: <MaterialIcon name="feedback" size={size} color={color} />,

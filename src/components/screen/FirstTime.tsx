@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
+import OctIcon from 'react-native-vector-icons/Octicons'
 import { Context } from '../../store/AppContext'
 import { fetchCovidData } from "../../util/dataHelper/fetchCovidData";
 import { getData } from "../../store/localDataHelper";
@@ -31,6 +32,7 @@ const FirstTime: React.FC<{}> = (props) => {
           onChangeText={setText}
           value={search}
         />
+        <OctIcon name="search" />
         <Button title="Search" onPress={fetchData} />
       </View>
     </View>

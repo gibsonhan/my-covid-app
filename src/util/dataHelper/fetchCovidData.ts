@@ -33,7 +33,7 @@ async function fetchCovidData(search: string) {
   } catch (error) { }
 
   const newData = await filterObject(data);
-  await storeData(newData);
+  await storeData('covid search', newData);
 }
 
 export { fetchCovidData };
