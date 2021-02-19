@@ -1,30 +1,41 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-
+import React, { useState } from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import OctIcon from 'react-native-vector-icons/Octicons'
-import { Context } from '../../store/AppContext'
-import { fetchCovidData } from "../../util/dataHelper/fetchCovidData";
-import { getData } from "../../store/localDataHelper";
+
+import Map from '../Map'
+import fetchCovidData from '../../util/fetchCovidData';
+import initGeoPos from '../../reserve/map/initGeoPos'
 
 const FirstTime: React.FC<{}> = (props) => {
+  const [data, setData] = useState({});
+  const [geoPosition, setGeoPosition] = useState(initGeoPos)
   const [search, setSearchInput] = useState("");
-  const [showData, setShowData] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
 
   const fetchData = async () => {
-    await fetchCovidData(search);
-    setShowSearch(true);
-    setShowData(JSON.stringify(await getData('test')));
+    try {
+      const response = await fetchCovidData(search);
+      const { latitude, longitude } = response
+      const newGeoPosition = {
+        latitude,
+        longitude,
+        latitudeDelta: 10,
+        longitudeDelta: 10,
+      }
+      setGeoPosition(newGeoPosition)
+      setData(response)
+    }
+    catch (err) {
+      console.log(err)
+    }
   };
 
   const setText = (text: string) => {
     setSearchInput(text.toLowerCase());
   }
-  const store = useContext(Context)
 
   return (
     <View style={styles.root}>
-      {showSearch && <Text style={styles.text}>{showData}</Text>}
+      <Map geoPosition={geoPosition} />
       <View style={styles.search}>
         <TextInput
           style={styles.textInput}
@@ -35,7 +46,7 @@ const FirstTime: React.FC<{}> = (props) => {
         <OctIcon name="search" />
         <Button title="Search" onPress={fetchData} />
       </View>
-    </View>
+    </View >
   );
 };
 
@@ -45,21 +56,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  //TODO GOTTA practice DEM flexbox skills
-  text: {
-    width: 200,
-    flexShrink: 1,
-  },
   textInput: {
     width: 200,
     height: 40,
-    borderColor: "gray",
+    borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 20,
   },
   search: {
-    flexShrink: 1,
+    position: 'absolute',
+    top: 100,
+    zIndex: 1,
     flexDirection: "column",
+    justifyContent: 'center'
   },
 });
 

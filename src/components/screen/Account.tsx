@@ -12,9 +12,8 @@ const Account: React.FC<AccountInterface> = ({ navigation }) => {
     return (
         <View style={styles.root}>
             <SignIn />
-            <Text style={{ flex: 1 }}>
-                Don't Have an Account?
-                <span onClick={handleNavigation}>Sign Up Here</span> </Text>
+            <Text style={{ flex: 1 }}> Don't Have an Account? </Text>
+            <Text onPress={handleNavigation}>Sign Up Here</Text>
         </View>
     );
 };

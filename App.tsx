@@ -1,4 +1,5 @@
 //import './wdyr'; // <--- first import
+
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -13,7 +14,7 @@ import Feedback from "./src/components/screen/Feedback";
 import Home from "./src/components/screen/Home";
 import RegisterModal from './src/components/modal/RegisterModal'
 //functions
-import { iconSelector } from "./src/util/iconSelector";
+import { iconSelector } from './src/util/iconSelector'
 
 const RootStack = createStackNavigator()
 const BottomTab = createBottomTabNavigator();
