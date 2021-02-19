@@ -4,7 +4,8 @@ import OctIcon from 'react-native-vector-icons/Octicons'
 
 import Map from '../Map'
 import fetchCovidData from '../../util/fetchCovidData';
-import initGeoPos from '../../reserve/map/initGeoPos'
+import initGeoPos from '../../reserve/map/initGeoPos';
+import SearchInput from '../../SearchInput'
 
 const FirstTime: React.FC<{}> = (props) => {
   const [data, setData] = useState({});
@@ -36,16 +37,13 @@ const FirstTime: React.FC<{}> = (props) => {
   return (
     <View style={styles.root}>
       <Map geoPosition={geoPosition} />
-      <View style={styles.search}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Enter State or Zip Code"
-          onChangeText={setText}
-          value={search}
-        />
-        <OctIcon name="search" />
-        <Button title="Search" onPress={fetchData} />
-      </View>
+      <SearchInput
+        props={{
+          fetchData,
+          setText,
+          value: search
+        }}
+      />
     </View >
   );
 };
@@ -55,20 +53,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  textInput: {
-    width: 200,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-  },
-  search: {
-    position: 'absolute',
-    top: 100,
-    zIndex: 1,
-    flexDirection: "column",
-    justifyContent: 'center'
   },
 });
 
