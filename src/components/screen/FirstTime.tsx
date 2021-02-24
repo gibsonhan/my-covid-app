@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
-import OctIcon from 'react-native-vector-icons/Octicons'
+import { StyleSheet, Text, View } from "react-native";
 
 import Map from '../Map'
+import InfoTab from '../InfoTab'
+
 import fetchCovidData from '../../util/fetchCovidData';
 import initGeoPos from '../../reserve/map/initGeoPos';
 import SearchInput from '../../SearchInput'
 
-const FirstTime: React.FC<{}> = (props) => {
+function FirstTime() {
   const [data, setData] = useState({});
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
   const [search, setSearchInput] = useState("");
@@ -44,15 +45,20 @@ const FirstTime: React.FC<{}> = (props) => {
           value: search
         }}
       />
+      <InfoTab />
     </View >
   );
 };
 
+
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: 'red',
   },
 });
 

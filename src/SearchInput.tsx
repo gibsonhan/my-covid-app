@@ -24,11 +24,12 @@ const SearchInput: React.FunctionComponent<{ props: SearchInputInterface }> = ({
 }
 const styles = StyleSheet.create({
     search: {
+        zIndex: 1,
         position: 'absolute',
         top: 100,
-        zIndex: 1,
+        backgroundColor: 'gray',
         flexDirection: "column",
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     textInput: {
         width: 200,
