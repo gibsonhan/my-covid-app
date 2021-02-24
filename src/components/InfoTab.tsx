@@ -1,11 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Animated, Button, Dimensions, PanResponder, Pressable, StyleSheet, Text, View } from 'react-native'
 
-const InfoTab = () => {
+export interface InfoTabInterface {
+    data: {}
+}
+const InfoTab = (props: InfoTabInterface) => {
+    const { data } = props
     const [press, setPress] = useState(0)
     const [fullScreen, setFullScreen] = useState(false)
     const [tabHeight, setTabHeight] = useState(80)
     const heightAnim = useRef(new Animated.Value(80)).current;
+
+    useEffect(() => {
+        console.log('what is data', data)
+    }, [props])
 
     const moveUp = () => {
         setPress(props => props + 1)

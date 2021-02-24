@@ -8,8 +8,8 @@ async function fetchCovidByState(search: string) {
   const STATE_CODE = findStateCode(search);
   const baseUrl = `https://api.covidtracking.com/v1/states/${STATE_CODE}/current.json`;
   const response = await fetch(baseUrl);
-  const body = await response.json();
-  return body;
+  const data = await response.json();
+  return data;
 }
 
 async function fetchCovidDataByZip(zipCode: string) {
@@ -18,31 +18,29 @@ async function fetchCovidDataByZip(zipCode: string) {
   const body = await response.json();
   //temp solution covert zip to state search
   const state = body.places[0]["state abbreviation"];
-
   const baseUrl = `https://api.covidtracking.com/v1/states/${state}/current.json`;
   const response2 = await fetch(baseUrl);
-  const body2 = await response2.json();
-  return body2;
+  const data = await response2.json();
+  return data
 }
 
 async function fetchCovidData(search: string) {
-  let data = {};
-  console.log('what is search', search)
-  try {
-    data = validateZip(search)
-      ? await fetchCovidDataByZip(search)
-      : await fetchCovidByState(search);
-  } catch (error) {
-    console.log('failed to fetch data', error);
-  }
-  console.log('checking data', data)
-  const newData = await filterObject(data);
+  const response = validateZip(search)
+    ? await fetchCovidDataByZip(search)
+    : await fetchCovidByState(search);
+
+  const newData = await filterObject(response);
   const avgLongAndLat = await findAvgLongLat(newData.state);
 
-  return {
-    ...newData,
-    ...avgLongAndLat
-  };
+  if (response.error) {
+    return { ...response }
+  }
+  else {
+    return {
+      ...newData,
+      ...avgLongAndLat
+    }
+  }
 }
 
 export default fetchCovidData;

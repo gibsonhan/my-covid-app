@@ -16,6 +16,8 @@ function FirstTime() {
   const fetchData = async () => {
     try {
       const response = await fetchCovidData(search);
+      if (response.error) throw response;
+
       const { latitude, longitude } = response
       const newGeoPosition = {
         latitude,
@@ -23,11 +25,14 @@ function FirstTime() {
         latitudeDelta: 10,
         longitudeDelta: 10,
       }
+
       setGeoPosition(newGeoPosition)
-      setData(response)
+      console.log('what is repsonse', response)
+      setData(() => response)
     }
     catch (err) {
-      console.log(err)
+      console.log('err', err)
+      setGeoPosition(initGeoPos)
     }
   };
 
@@ -45,7 +50,7 @@ function FirstTime() {
           value: search
         }}
       />
-      <InfoTab {...data} />
+      <InfoTab data={data} />
     </View >
   );
 };
