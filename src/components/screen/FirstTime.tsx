@@ -45,7 +45,7 @@ function FirstTime() {
           value: search
         }}
       />
-      <InfoTab />
+      <InfoTab {...data} />
     </View >
   );
 };

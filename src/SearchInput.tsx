@@ -1,6 +1,8 @@
 import React from 'react';
-import { Button, TextInput, StyleSheet, View } from 'react-native';
+import { Button, TextInput, StyleSheet, View, Dimensions } from 'react-native';
 import OctIcon from 'react-native-vector-icons/Octicons';
+
+import CenterIcon from './components/common/CenterIcon'
 
 export interface SearchInputInterface {
     setText: (text: string) => void,
@@ -10,33 +12,46 @@ export interface SearchInputInterface {
 const SearchInput: React.FunctionComponent<{ props: SearchInputInterface }> = ({ props }) => {
     const { fetchData, setText, value } = props
     return (
-        <View style={styles.search}>
-            <TextInput
-                style={styles.textInput}
-                placeholder="Enter State or Zip Code"
-                onChangeText={setText}
-                value={value}
+        <View style={styles.root}>
+            <View style={styles.search} >
+                <CenterIcon
+                    height={40}
+                    width={40}
+                    icon={<OctIcon name="search" />}
+                />
+
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter State or Zip Code"
+                    onChangeText={setText}
+                    value={value}
+                />
+            </View>
+            <Button
+                title="Search"
+                onPress={fetchData}
+                style={{ backgroundColor: 'white' }}
             />
-            <OctIcon name="search" />
-            <Button title="Search" onPress={fetchData} />
         </View>
     )
 }
 const styles = StyleSheet.create({
-    search: {
+    root: {
         zIndex: 1,
         position: 'absolute',
-        top: 100,
-        backgroundColor: 'gray',
-        flexDirection: "column",
-        justifyContent: 'center',
+        top: 60,
+    },
+    search: {
+        flex: 1,
+        flexDirection: "row",
+        backgroundColor: 'white',
+
     },
     textInput: {
-        width: 200,
+        width: Dimensions.get('window').width * .50,
+        paddingLeft: 10,
         height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 20,
+        borderWidth: 0,
     },
 
 });
