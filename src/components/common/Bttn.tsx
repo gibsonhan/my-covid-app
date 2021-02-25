@@ -15,7 +15,6 @@ export interface ButtonInterface {
 
 function Bttn(props: ButtonInterface) {
     const { icon, title, height, width, style, onPress } = props
-    console.log('what is icon', icon, title)
     if (icon) {
         return (
             <TouchableOpacity

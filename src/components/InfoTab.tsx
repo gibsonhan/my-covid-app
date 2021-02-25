@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Animated, Button, Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet, Text, View, VirtualizedList } from 'react-native'
+import { Animated, Button, Dimensions, FlatList, ListRenderItemInfo, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import EntypoIcon from "react-native-vector-icons/Entypo";
 
 import Bttn from '../components/common/Bttn'
@@ -7,31 +7,9 @@ export interface InfoTabInterface {
     data: {}
 }
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-    {
-        id: 'bd7acb1ea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: 'h1',
-        title: 'hello'
-    }
-];
-
 const InfoTab = (props: InfoTabInterface) => {
     const { data } = props
+    const [healthList, setHealthList] = useState()
     const [fullScreen, setFullScreen] = useState(false)
 
     //Current Bottom Nav is 48px + 12px Padding Top = 60. 
@@ -40,17 +18,24 @@ const InfoTab = (props: InfoTabInterface) => {
     const endTop = 160;
     const topAnim = useRef(new Animated.Value(startTop)).current;
 
+    //convert obj data into Array
     useEffect(() => {
-        let w = Dimensions.get('window').width
-        let h = Dimensions.get('window').height
+        type listType = {
+            key: string,
+            title: string,
+            value: string
+        }
+        let list: Array<listType> = []
 
-        let w2 = Dimensions.get('screen').width
-        let h2 = Dimensions.get('screen').height
+        for (const [key, value] of Object.entries(data)) {
+            let newObj = { key: list.length + `${key}`, title: `${key}`, value: `${value}` }
+            list = [...list, newObj]
+        }
 
-        console.log(w, h)
-        console.log(w2, h2)
+        setHealthList(list)
     }, [data])
 
+    //animation, moves info Tab up
     const moveUp = () => {
         setFullScreen(true)
         // Will change fadeAnim value to 1 in 5 seconds
@@ -61,6 +46,7 @@ const InfoTab = (props: InfoTabInterface) => {
         }).start();
     };
 
+    //animation, moves info Tab down
     const moveDown = () => {
         // Will change fadeAnim value to 0 in 5 seconds
         Animated.timing(topAnim, {
@@ -71,15 +57,22 @@ const InfoTab = (props: InfoTabInterface) => {
         }).start();
     };
 
-    const Item = ({ title }) => (
-        <View style={styles.item}>
-            <Text style={styles.title}>{title}</Text>
-        </View>
-    );
+    type itemTypes = {
+        title: string,
+        value: string
+    }
+    const Item = ({ title, value }: itemTypes) => {
+        return (
+            <View style={styles.item}>
+                <Text style={styles.title}>{title}</Text>
+                <Text >{value}</Text>
+            </View>
+        );
+    };
 
 
-    const renderItem = ({ item }) => (
-        <Item title={item.title} />
+    const renderItem = ({ item }: ListRenderItemInfo<any>) => (
+        <Item title={item.title} value={item.value} />
     );
 
     return (
@@ -97,9 +90,9 @@ const InfoTab = (props: InfoTabInterface) => {
             {fullScreen &&
                 <SafeAreaView style={styles.listContainer}>
                     <FlatList
-                        data={DATA}
+                        data={healthList}
                         initialNumToRender={4}
-                        renderItem={renderItem}
+                        renderItem={(ele) => renderItem(ele)}
                         keyExtractor={item => item.id}
                     />
                 </SafeAreaView>
@@ -143,9 +136,12 @@ const styles = StyleSheet.create({
     },
     item: {
         zIndex: 3,
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         backgroundColor: '#f9c2ff',
         height: 150,
-        justifyContent: 'center',
+
         marginVertical: 8,
         marginHorizontal: 16,
         padding: 20,

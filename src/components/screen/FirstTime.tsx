@@ -27,7 +27,6 @@ function FirstTime() {
       }
 
       setGeoPosition(newGeoPosition)
-      console.log('what is repsonse', response)
       setData(() => response)
     }
     catch (err) {
