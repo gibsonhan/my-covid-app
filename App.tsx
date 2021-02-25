@@ -41,6 +41,13 @@ export default function App() {
           tabBarOptions={{
             activeTintColor: "tomato",
             inactiveTintColor: "gray",
+            style: {
+              backgroundColor: '#f7f7f7',
+              //----------add this line------------------------//
+              height: 70,
+              borderTopWidth: 1,
+              borderTopColor: 'red'
+            },
           }}
         >
           <BottomTab.Screen name="COVID" component={FirstTime} />
@@ -66,6 +73,13 @@ export default function App() {
         tabBarOptions={{
           activeTintColor: "tomato",
           inactiveTintColor: "gray",
+          style: {
+            backgroundColor: 'green',
+            //----------add this line------------------------//
+            height: 70,
+            borderTopWidth: 1,
+            borderTopColor: 'red'
+          },
         }}
       >
         <BottomTab.Screen name="COVID" component={FirstTime} />
