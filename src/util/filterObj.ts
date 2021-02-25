@@ -16,8 +16,35 @@ export interface filterInterface {
     positiveIncrease: number;
 }
 
+//LOOK IT UP?
+export function filterOutObj(list, obj) {
+    let newObj = {}
+    //iterate through object
+    for (const [key, value] of Object.entries(obj)) {
+        //if key exist in filter list, exclude.
+        if (!list[key]) {
+            newObj = { ...newObj, [key]: value }
+        }
+    }
+    return newObj
+}
+
+export function extractObject(list, obj) {
+    let newObj = {}
+    //iterate through object
+    for (const [key, value] of Object.entries(obj)) {
+        //if key exist in filter list, exclude.
+        if (list[key]) {
+            newObj = { ...newObj, [key]: value }
+        }
+    }
+    return newObj
+}
+
+//TODO need to generalize this function
 export default function filterObject(data: object): filterInterface {
     //TODO need to fix this typescript
+    console.log('what is entire data obj', data)
     const {
         date,
         lastUpdateEt,
@@ -34,18 +61,19 @@ export default function filterObject(data: object): filterInterface {
     }: filterInterface = data;
 
     const newData = {
-        state,
-        date,
-        lastUpdateEt,
         dataQualityGrade,
+        death,
+        deathIncrease,
         positive,
         hospitalizedIncrease,
         hospitalizedCurrently,
         onVentilatorCurrently,
         inIcuCurrently,
-        death,
-        deathIncrease,
-        positiveIncrease
+        state,
+        positiveIncrease,
+        date,
+        lastUpdateEt,
+
     };
 
     return newData;
