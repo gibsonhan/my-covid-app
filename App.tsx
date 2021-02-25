@@ -22,44 +22,11 @@ const BottomTab = createBottomTabNavigator();
 export default function App() {
   function BottomNav() {
     const store = useContext(Context)
-    const { idToken } = store.state
-
-    if (idToken.length > 0) {
-      return (
-        <BottomTab.Navigator
-          //initialRouteName="Login"
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              return iconSelector({
-                routeName: route.name,
-                focused,
-                size,
-                color,
-              });
-            },
-          })}
-          tabBarOptions={{
-            activeTintColor: "tomato",
-            inactiveTintColor: "gray",
-            style: {
-              backgroundColor: '#f7f7f7',
-              //----------add this line------------------------//
-              height: 70,
-              borderTopWidth: 1,
-              borderTopColor: 'red'
-            },
-          }}
-        >
-          <BottomTab.Screen name="COVID" component={FirstTime} />
-          <BottomTab.Screen name="Home" component={Home} />
-          <BottomTab.Screen name="Dashboard" component={Dashboard} />
-          <BottomTab.Screen name="Feedback" component={Feedback} />
-        </BottomTab.Navigator>
-      )
-    }
+    const hasToken = store.state.idToken.length > 0
+    //const hasToken = idToken.length > 0
     return (
       <BottomTab.Navigator
-        //initialRouteName="Login"
+        initialRouteName="COVID"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return iconSelector({
@@ -74,17 +41,15 @@ export default function App() {
           activeTintColor: "tomato",
           inactiveTintColor: "gray",
           style: {
-            backgroundColor: 'green',
-            //----------add this line------------------------//
-            height: 70,
-            borderTopWidth: 1,
-            borderTopColor: 'red'
+            paddingTop: 12, //default height of bottom Nav is about 48px
+            //display: "none"
           },
         }}
       >
         <BottomTab.Screen name="COVID" component={FirstTime} />
         <BottomTab.Screen name="Home" component={Home} />
-        <BottomTab.Screen name="Login" component={Account} />
+        { !hasToken && <BottomTab.Screen name="Login" component={Account} />}
+        { hasToken && <BottomTab.Screen name="Dashboard" component={Dashboard} />}
         <BottomTab.Screen name="Feedback" component={Feedback} />
       </BottomTab.Navigator>
     )

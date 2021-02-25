@@ -12,7 +12,7 @@ export interface geoPositionInterface {
 const Map: React.FunctionComponent<{ geoPosition: geoPositionInterface }> = ({ geoPosition }) => {
     if (!geoPosition) return <>Loading... </>
     return (
-        <View styles={styles.container}>
+        <View style={styles.container}>
             <MapView
                 style={styles.map}
                 region={{ ...geoPosition }}
@@ -24,8 +24,8 @@ const Map: React.FunctionComponent<{ geoPosition: geoPositionInterface }> = ({ g
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        zIndex: 2,
+        //flex: 1,
+        zIndex: 0,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Animated, Button, Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet, Text, View, VirtualizedList } from 'react-native'
+import EntypoIcon from "react-native-vector-icons/Entypo";
 
+import Bttn from '../components/common/Bttn'
 export interface InfoTabInterface {
     data: {}
 }
@@ -30,11 +32,11 @@ const DATA = [
 
 const InfoTab = (props: InfoTabInterface) => {
     const { data } = props
-    const [press, setPress] = useState(0)
     const [fullScreen, setFullScreen] = useState(false)
-    const [tabHeight, setTabHeight] = useState(80)
 
-    const startTop = Dimensions.get('window').height - 140
+    //Current Bottom Nav is 48px + 12px Padding Top = 60. 
+    //Not sure why we need an 80px offset to get get above the bottom nav, 
+    const startTop = Dimensions.get('window').height - (80 + 40);
     const endTop = 160;
     const topAnim = useRef(new Animated.Value(startTop)).current;
 
@@ -50,7 +52,6 @@ const InfoTab = (props: InfoTabInterface) => {
     }, [data])
 
     const moveUp = () => {
-        setPress(props => props + 1)
         setFullScreen(true)
         // Will change fadeAnim value to 1 in 5 seconds
         Animated.timing(topAnim, {
@@ -83,21 +84,26 @@ const InfoTab = (props: InfoTabInterface) => {
 
     return (
         <Animated.View style={[styles.infoTab, { top: topAnim }]}>
-            <Pressable
-                onPressOut={moveUp}
-                style={styles.press}
-            >
-                <Text style={styles.tabContent}>{press}</Text>
-            </Pressable>
-            {fullScreen && <View style={{ padding: 10 }}><Button title="close" onPress={moveDown} /></View>}
-            {fullScreen && <SafeAreaView style={styles.listContainer}>
-                <FlatList
-                    data={DATA}
-                    initialNumToRender={4}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
+            <Bttn title="open" onPress={moveUp} height={40} width={80} style={{ marginTop: 10 }} />
+            {fullScreen &&
+                <Bttn
+                    title="Map"
+                    icon={<EntypoIcon name="map" size={20} color={'black'} />}
+                    style={{ zIndex: 3, position: 'absolute', bottom: 100 }}
+                    height={40} width={80}
+                    onPress={moveDown}
                 />
-            </SafeAreaView>}
+            }
+            {fullScreen &&
+                <SafeAreaView style={styles.listContainer}>
+                    <FlatList
+                        data={DATA}
+                        initialNumToRender={4}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id}
+                    />
+                </SafeAreaView>
+            }
         </Animated.View >
     )
 }
@@ -107,10 +113,10 @@ const styles = StyleSheet.create({
         zIndex: 1,
         display: 'flex',
         position: 'absolute',
-        top: Dimensions.get('window').height - 140,
+        //top: Dimensions.get('window').height,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        height: Dimensions.get('window').height - 226,
+        height: Dimensions.get('window').height - 160, //full window => size of screen - 160. 160 is the space for search bar
         width: Dimensions.get('window').width,
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,

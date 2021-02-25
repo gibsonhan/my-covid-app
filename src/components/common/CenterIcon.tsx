@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 export interface CenterIconInterface {
     height: number,
     width: number,
-    icon: React.Component,
+    icon: ReactElement
 }
 
 function CenterIcon(props: CenterIconInterface) {
