@@ -1,12 +1,12 @@
 [
     {
         "state": "Alaska",
-        "latitude": 61.3850,
+        "latitude": 61.385,
         "longitude": -152.2683
     },
     {
         "state": "Alabama",
-        "latitude": 32.7990,
+        "latitude": 32.799,
         "longitude": -86.8073
     },
     {
@@ -21,7 +21,7 @@
     },
     {
         "state": "California",
-        "latitude": 36.1700,
+        "latitude": 36.17,
         "longitude": -119.7462
     },
     {
@@ -42,7 +42,7 @@
     {
         "state": "Florida",
         "latitude": 27.8333,
-        "longitude": -81.7170
+        "longitude": -81.717
     },
     {
         "state": "Georgia",
@@ -57,7 +57,7 @@
     {
         "state": "Iowa",
         "latitude": 42.0046,
-        "longitude": -93.2140
+        "longitude": -93.214
     },
     {
         "state": "Idaho",
@@ -81,7 +81,7 @@
     },
     {
         "state": "Kentucky",
-        "latitude": 37.6690,
+        "latitude": 37.669,
         "longitude": -84.6514
     },
     {
@@ -117,7 +117,7 @@
     {
         "state": "Missouri",
         "latitude": 38.4623,
-        "longitude": -92.3020
+        "longitude": -92.302
     },
     {
         "state": "Mississippi",
@@ -137,7 +137,7 @@
     {
         "state": "North Dakota",
         "latitude": 47.5362,
-        "longitude": -99.7930
+        "longitude": -99.793
     },
     {
         "state": "Nebraska",
@@ -151,7 +151,7 @@
     },
     {
         "state": "New Jersey",
-        "latitude": 40.3140,
+        "latitude": 40.314,
         "longitude": -74.5089
     },
     {
@@ -187,7 +187,7 @@
     {
         "state": "Pennsylvania",
         "latitude": 40.5773,
-        "longitude": -77.2640
+        "longitude": -77.264
     },
     {
         "state": "Rhode Island",
@@ -211,7 +211,7 @@
     },
     {
         "state": "Texas",
-        "latitude": 31.1060,
+        "latitude": 31.106,
         "longitude": -97.6475
     },
     {
@@ -221,7 +221,7 @@
     },
     {
         "state": "Virginia",
-        "latitude": 37.7680,
+        "latitude": 37.768,
         "longitude": -78.2057
     },
     {
@@ -241,7 +241,7 @@
     },
     {
         "state": "West Virginia",
-        "latitude": 38.4680,
+        "latitude": 38.468,
         "longitude": -80.9696
     },
     {

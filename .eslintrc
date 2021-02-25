@@ -1,6 +1,11 @@
 {
   "root": true,
-  "extends": ['@react-native-community', 'airbnb-typescript', 'prettier', 'prettier/@typescript-eslint', 'prettier/react'
+  "extends": [
+    "@react-native-community",
+    "airbnb-typescript",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "prettier/react"
   ],
   "plugins": [
     "react",
@@ -32,6 +37,10 @@
       {
         "avoidEscape": true
       }
+    ],
+    "indent": [
+      4,
+      "tab"
     ]
   },
   "globals": {
