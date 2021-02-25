@@ -1,6 +1,12 @@
 {
-  "extends": "airbnb",
-  "plugins": ["react", "react-native", "react-hooks"],
+  "root": true,
+  "extends": ['@react-native-community', 'airbnb-typescript', 'prettier', 'prettier/@typescript-eslint', 'prettier/react'
+  ],
+  "plugins": [
+    "react",
+    "react-native",
+    "react-hooks"
+  ],
   "parser": "babel-eslint",
   "env": {
     "jest": true,
@@ -20,7 +26,13 @@
     "react-native/no-color-literals": 2,
     "react-native/no-raw-text": 2,
     "react-native/no-single-element-style-arrays": 2,
-    "quotes": [2, "single", { "avoidEscape": true }]
+    "quotes": [
+      2,
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ]
   },
   "globals": {
     "fetch": false

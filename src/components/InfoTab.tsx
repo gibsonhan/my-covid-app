@@ -22,6 +22,7 @@ const InfoTab = (props: InfoTabInterface) => {
         Animated.timing(heightAnim, {
             toValue: Dimensions.get('window').height,
             duration: 500,
+            useNativeDriver: true,
         }).start();
     };
 
@@ -30,6 +31,7 @@ const InfoTab = (props: InfoTabInterface) => {
         Animated.timing(heightAnim, {
             toValue: 100,
             duration: 300,
+            useNativeDriver: true,
         }).start();
     };
 

@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint *.tsx **/* .tsx",
+    "lint": "tsc --noEmit && eslint --ext .js,.jsx,.ts,.tsx ./",
+    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
     "postinstall": "sh fix-rn-web-proptypes.sh"
   },
   "dependencies": {
@@ -45,14 +46,18 @@
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
     "@types/react-native-vector-icons": "^6.4.6",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.18.0",
+    "eslint": "^7.20.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-react-native": "^3.10.0",
+    "prettier": "^2.2.1",
     "typescript": "~4.0.0"
   },
   "private": true
