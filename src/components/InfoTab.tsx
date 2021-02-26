@@ -6,6 +6,7 @@ import EntypoIcon from "react-native-vector-icons/Entypo";
 import MyList from './common/MyList';
 
 //helper util
+import { convertToArray } from '../util/objToArray';
 import { storeData } from '../util/localDataHelper'
 import USHEALTH from '../reserve/health/unitedState'
 export interface InfoTabInterface {
@@ -25,20 +26,7 @@ const InfoTab = (props: InfoTabInterface) => {
 
     //convert obj data into Array
     useEffect(() => {
-        if (!data) return
-
-        type listType = {
-            key: string,
-            title: string,
-            value: string
-        }
-        let list: Array<listType> = []
-
-        for (const [key, value] of Object.entries(data)) {
-            let newObj = { key: list.length + `${key}`, title: `${key}`, value: `${value}` }
-            list = [...list, newObj]
-        }
-
+        const list = convertToArray(data)
         setHealthList(list)
     }, [data])
 
