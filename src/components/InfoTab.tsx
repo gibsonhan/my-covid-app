@@ -3,6 +3,8 @@ import { Animated, Dimensions, FlatList, ListRenderItemInfo, SafeAreaView, Style
 //components
 import Bttn from '../components/common/Bttn'
 import EntypoIcon from "react-native-vector-icons/Entypo";
+import MyList from './common/MyList';
+
 //helper util
 import { storeData } from '../util/localDataHelper'
 import USHEALTH from '../reserve/health/unitedState'
@@ -23,6 +25,8 @@ const InfoTab = (props: InfoTabInterface) => {
 
     //convert obj data into Array
     useEffect(() => {
+        if (!data) return
+
         type listType = {
             key: string,
             title: string,
@@ -71,26 +75,6 @@ const InfoTab = (props: InfoTabInterface) => {
         }
     }
 
-    type itemTypes = {
-        title: string,
-        value: string,
-    }
-
-    const Item = ({ title, value }: itemTypes) => {
-        const notHaveTitle = !USHEALTH[title] || USHEALTH[title] === null || USHEALTH[title] === 'null'
-        if (notHaveTitle || value === 'null') return <></>
-        return (
-            <View style={styles.item}>
-                <Text style={styles.title}>{USHEALTH[title]}</Text>
-                <Text >{value}</Text>
-            </View>
-        );
-    };
-
-    const renderItem = ({ item }: ListRenderItemInfo<any>) => (
-        <Item title={item.title} value={item.value} />
-    );
-
     return (
         <Animated.View style={[styles.infoTab, { top: topAnim }]}>
             {!fullScreen &&
@@ -122,12 +106,7 @@ const InfoTab = (props: InfoTabInterface) => {
             }
             {fullScreen &&
                 <SafeAreaView style={styles.listContainer}>
-                    <FlatList
-                        data={healthList}
-                        initialNumToRender={4}
-                        renderItem={(ele) => renderItem(ele)}
-                        keyExtractor={item => item.id}
-                    />
+                    <MyList data={healthList} />
                 </SafeAreaView>
             }
         </Animated.View >
@@ -139,7 +118,6 @@ const styles = StyleSheet.create({
         zIndex: 1,
         display: 'flex',
         position: 'absolute',
-        //top: Dimensions.get('window').height,
         justifyContent: 'flex-start',
         alignItems: 'center',
         height: Dimensions.get('window').height - 160, //full window => size of screen - 160. 160 is the space for search bar
@@ -148,37 +126,9 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 40,
         backgroundColor: 'gray'
     },
-    press: {
-        display: 'flex',
-        alignItems: 'center',
-        zIndex: 2,
-        height: 60,
-        width: Dimensions.get('window').width,
-        paddingTop: 10,
-    },
-    tabContent: {
-        height: 100,
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 20,
-    },
     listContainer: {
         height: Dimensions.get('window').height - 300,
         width: Dimensions.get('window').width,
-    },
-    item: {
-        zIndex: 3,
-        flexDirection: 'row-reverse',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        backgroundColor: '#f9c2ff',
-        height: 150,
-
-        marginVertical: 8,
-        marginHorizontal: 16,
-        padding: 20,
-        borderRadius: 20,
     },
 });
 
