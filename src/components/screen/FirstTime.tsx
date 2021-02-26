@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-
-import Map from '../Map'
+import { formatISO } from 'date-fns'
+//components
 import InfoTab from '../InfoTab'
-
+import Map from '../Map'
+import SearchInput from '../../SearchInput'
+//helper util
 import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData';
 import initGeoPos from '../../reserve/map/initGeoPos'
-import SearchInput from '../../SearchInput'
-
 import { getData, storeData } from "../../util/localDataHelper"
+//reserved words
+import { DATE_CHECKED } from '../../reserve/health/unitedState'
 
 function FirstTime() {
   const [data, setData] = useState({});
@@ -18,19 +20,24 @@ function FirstTime() {
   useEffect(() => {
     async function fetchData() {
       const localData = await getData('US')
-      if (localData) {
-        console.log('has local data')
+      const localDataDate = localData[DATE_CHECKED].slice(0, 10)
+      const today = formatISO(new Date()).slice(0, 10)
+
+      if (localData && localDataDate === today) {
+        console.log('has local data', localData)
         setData(localData)
         return
       }
-
-      try {
-        const response = await fetchCovidByCountry()
-        setData(() => response)
-        storeData('US', response)
-      }
-      catch (error) {
-        console.log('failed to fetch COVID data for united states')
+      else {
+        try {
+          console.log('does not have local data')
+          const response = await fetchCovidByCountry()
+          setData(() => response)
+          storeData('US', response)
+        }
+        catch (error) {
+          console.log('failed to fetch COVID data for united states')
+        }
       }
     }
 
