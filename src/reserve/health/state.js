@@ -1,3 +1,4 @@
+//TODO need to migrate to new CDC data
 export const DATE = 'date'
 export const DATE_CHECKED = "dateChecked"
 export const DEATH = "death"

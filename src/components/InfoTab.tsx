@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Animated, Button, Dimensions, FlatList, ListRenderItemInfo, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import EntypoIcon from "react-native-vector-icons/Entypo";
-
+import USHEALTH from '../reserve/health/unitedState'
 import Bttn from '../components/common/Bttn'
 export interface InfoTabInterface {
     data: {}
@@ -59,17 +59,18 @@ const InfoTab = (props: InfoTabInterface) => {
 
     type itemTypes = {
         title: string,
-        value: string
+        value: string,
     }
     const Item = ({ title, value }: itemTypes) => {
+        const notHaveTitle = !USHEALTH[title] || USHEALTH[title] === null || USHEALTH[title] === 'null'
+        if (notHaveTitle || value === 'null') return <></>
         return (
             <View style={styles.item}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{USHEALTH[title]}</Text>
                 <Text >{value}</Text>
             </View>
         );
     };
-
 
     const renderItem = ({ item }: ListRenderItemInfo<any>) => (
         <Item title={item.title} value={item.value} />
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     title: {
-        fontSize: 32,
+        fontSize: 20,
     },
     listContainer: {
         height: Dimensions.get('window').height - 326,
