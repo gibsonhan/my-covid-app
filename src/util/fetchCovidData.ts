@@ -4,6 +4,13 @@ import findAvgLongLat from './findAvgLongLat';
 import findStateCode from './findStateCode';
 import validateZip from './validateZip';
 
+export async function fetchCovidByCountry() {
+    const baseUrl = 'https://api.covidtracking.com/v1/us/current.json'
+    const response = await fetch(baseUrl);
+    const data = await response.json();
+    return data[0]
+}
+
 async function fetchCovidByState(search: string) {
     const STATE_CODE = findStateCode(search);
     const baseUrl = `https://api.covidtracking.com/v1/states/${STATE_CODE}/current.json`;

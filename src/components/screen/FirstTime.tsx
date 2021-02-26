@@ -1,17 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import Map from '../Map'
 import InfoTab from '../InfoTab'
 
-import fetchCovidData from '../../util/fetchCovidData';
-import initGeoPos from '../../reserve/map/initGeoPos';
+import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData';
+import initGeoPos from '../../reserve/map/initGeoPos'
 import SearchInput from '../../SearchInput'
+
+import { getData, storeData } from "../../util/localDataHelper"
 
 function FirstTime() {
   const [data, setData] = useState({});
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
   const [search, setSearchInput] = useState("");
+
+  useEffect(() => {
+    async function fetchData() {
+      const localData = await getData('US')
+      if (localData) {
+        console.log('has local data')
+        setData(localData)
+        return
+      }
+
+      try {
+        const response = await fetchCovidByCountry()
+        setData(() => response)
+        storeData('US', response)
+      }
+      catch (error) {
+        console.log('failed to fetch COVID data for united states')
+      }
+    }
+
+    fetchData()
+  }, [])
 
   const fetchData = async () => {
     try {
