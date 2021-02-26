@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Animated, Button, Dimensions, FlatList, ListRenderItemInfo, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import EntypoIcon from "react-native-vector-icons/Entypo";
-import USHEALTH from '../reserve/health/unitedState'
+import { Animated, Dimensions, FlatList, ListRenderItemInfo, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+//components
 import Bttn from '../components/common/Bttn'
+import EntypoIcon from "react-native-vector-icons/Entypo";
+//helper util
+import { storeData } from '../util/localDataHelper'
+import USHEALTH from '../reserve/health/unitedState'
 export interface InfoTabInterface {
     data: {}
 }
@@ -35,8 +38,20 @@ const InfoTab = (props: InfoTabInterface) => {
         setHealthList(list)
     }, [data])
 
+    //animation, moves info Tab down
+    const handleMoveDown = () => {
+        // Will change fadeAnim value to 0 in 5 seconds
+        setFullScreen(false)
+        Animated.timing(topAnim, {
+            toValue: startTop,
+            duration: 300,
+            useNativeDriver: false, //height animation is not supported by native driver
+
+        }).start();
+    };
+
     //animation, moves info Tab up
-    const moveUp = () => {
+    const handleMoveUp = () => {
         setFullScreen(true)
         // Will change fadeAnim value to 1 in 5 seconds
         Animated.timing(topAnim, {
@@ -46,21 +61,21 @@ const InfoTab = (props: InfoTabInterface) => {
         }).start();
     };
 
-    //animation, moves info Tab down
-    const moveDown = () => {
-        // Will change fadeAnim value to 0 in 5 seconds
-        Animated.timing(topAnim, {
-            toValue: startTop,
-            duration: 300,
-            useNativeDriver: false, //height animation is not supported by native driver
-
-        }).start();
-    };
+    //Save data to default local
+    const handleSaveDefault = async () => {
+        try {
+            await storeData('default', data)
+        }
+        catch (error) {
+            console.log('failed to store local Data')
+        }
+    }
 
     type itemTypes = {
         title: string,
         value: string,
     }
+
     const Item = ({ title, value }: itemTypes) => {
         const notHaveTitle = !USHEALTH[title] || USHEALTH[title] === null || USHEALTH[title] === 'null'
         if (notHaveTitle || value === 'null') return <></>
@@ -78,14 +93,31 @@ const InfoTab = (props: InfoTabInterface) => {
 
     return (
         <Animated.View style={[styles.infoTab, { top: topAnim }]}>
-            <Bttn title="open" onPress={moveUp} height={40} width={80} style={{ marginTop: 10 }} />
+            {!fullScreen &&
+                <Bttn
+                    title="open"
+                    style={{ marginTop: 10 }}
+                    height={30}
+                    width={60}
+                    onPress={handleMoveUp}
+                />
+            }
+            {fullScreen &&
+                <Bttn
+                    title="save default"
+                    style={{ marginTop: 10, marginBottom: 10 }}
+                    height={40}
+                    width={100}
+                    onPress={handleSaveDefault}
+                />
+            }
             {fullScreen &&
                 <Bttn
                     title="Map"
                     icon={<EntypoIcon name="map" size={20} color={'black'} />}
                     style={{ zIndex: 3, position: 'absolute', bottom: 100 }}
                     height={40} width={80}
-                    onPress={moveDown}
+                    onPress={handleMoveDown}
                 />
             }
             {fullScreen &&
@@ -132,7 +164,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     listContainer: {
-        height: Dimensions.get('window').height - 326,
+        height: Dimensions.get('window').height - 300,
         width: Dimensions.get('window').width,
     },
     item: {

@@ -1,4 +1,5 @@
 //TODO need to migrate to new CDC data
+//https://dev.socrata.com/docs/endpoints.html#2.1
 export const DATE = 'date'
 export const DATE_CHECKED = "dateChecked"
 export const DEATH = "death"

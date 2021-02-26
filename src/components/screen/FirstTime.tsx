@@ -17,6 +17,7 @@ function FirstTime() {
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
   const [search, setSearchInput] = useState("");
 
+  //Load INIT COVID DATA OF ENTIRE US
   useEffect(() => {
     async function fetchData() {
       const localData = await getData('US')

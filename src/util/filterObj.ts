@@ -44,7 +44,6 @@ export function extractObject(list, obj) {
 //TODO need to generalize this function
 export default function filterObject(data: object): filterInterface {
     //TODO need to fix this typescript
-    console.log('what is entire data obj', data)
     const {
         date,
         lastUpdateEt,

@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, TextInput, StyleSheet, View, Dimensions } from "react-native";
+import { TextInput, StyleSheet, View, Dimensions } from "react-native";
 import OctIcon from "react-native-vector-icons/Octicons";
 
+import Bttn from './components/common/Bttn'
 import CenterIcon from "./components/common/CenterIcon";
 
 export interface SearchInputInterface {
@@ -22,16 +23,22 @@ const SearchInput: React.FunctionComponent<{ props: SearchInputInterface }> = ({
 					value={value}
 				/>
 			</View>
-			<Button
+			<Bttn
 				title="Search"
 				onPress={fetchData}
+				height={40}
+				width={80}
+				style={{ marginTop: 10 }}
 			/>
 		</View>
 	);
 };
 const styles = StyleSheet.create({
 	root: {
+		display: 'flex',
 		zIndex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
 		position: "absolute",
 		top: 60,
 	},

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CenterIcon from './CenterIcon'
 
 export interface ButtonInterface {
-    title: string,
+    title?: string,
     icon?: ReactElement,
     onPress: () => void,
     height?: number,
