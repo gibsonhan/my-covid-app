@@ -12,7 +12,7 @@ import Dashboard from "./src/components/screen/Dashboard";
 import FirstTime from "./src/components/screen/FirstTime";
 import Feedback from "./src/components/screen/Feedback";
 import Home from "./src/components/screen/Home";
-import RegisterModal from './src/components/modal/RegisterModal'
+import RegisterModal from './src/components/modal/RegisterModal.native'
 //functions
 import { iconSelector } from './src/util/iconSelector'
 
@@ -26,7 +26,7 @@ export default function App() {
     //const hasToken = idToken.length > 0
     return (
       <BottomTab.Navigator
-        initialRouteName="COVID"
+        initialRouteName="Login"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return iconSelector({

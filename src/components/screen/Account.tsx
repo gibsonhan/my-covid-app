@@ -1,19 +1,23 @@
-import React, { ReactChild } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import SignIn from '../SignIn'
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
+import Toast from 'react-native-toast-message'
+import SignIn from '../SignIn.native'
 
 //TODO fix that naviation erro
 interface AccountInterface {
     navigation: any
 }
-const Account: React.FC<AccountInterface> = ({ navigation }) => {
+function Account({ navigation }: AccountInterface) {
     const handleNavigation = () => navigation.navigate('Modal')
     return (
         <View style={styles.root}>
+            <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
             <SignIn />
-            <Text style={{ flex: 1 }}> Don't Have an Account? </Text>
-            <Text onPress={handleNavigation}>Sign Up Here</Text>
+            <View>
+                <Text> Don't Have an Account? </Text>
+                <Text onPress={handleNavigation}>Sign Up Here</Text>
+            </View>
         </View>
     );
 };
@@ -21,12 +25,16 @@ const Account: React.FC<AccountInterface> = ({ navigation }) => {
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    regNavigation: {
-        color: 'blue',
+    toast: {
+        zIndex: 2,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        left: 0,
+        right: 0,
     }
 });
 

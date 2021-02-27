@@ -38,8 +38,9 @@ const Dashboard: React.FC<{}> = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
     root: {
-        alignItems: "center",
-        alignSelf: "center",
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
