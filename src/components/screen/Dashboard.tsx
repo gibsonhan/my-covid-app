@@ -5,9 +5,8 @@ import { Context } from '../../store/AppContext'
 import firebase from '../../util/firebaseHelper'
 import Toast from 'react-native-toast-message'
 
-
-
-const Dashboard: React.FC<{}> = ({ navigation }: any) => {
+//AVI
+const Dashboard = ({ navigation }: any) => {
     const store = useContext(Context)
     const { SIGN_OUT } = store.DISPATCH
     const handleSignOut = async () => {
@@ -15,7 +14,7 @@ const Dashboard: React.FC<{}> = ({ navigation }: any) => {
             let response = await firebase.auth().signOut()
             console.log('what is the response', response)
             SIGN_OUT()
-            navigation.navigate('COVID')
+            navigation.navigate('Feedback')
         }
         catch {
             Toast.show({
@@ -28,6 +27,7 @@ const Dashboard: React.FC<{}> = ({ navigation }: any) => {
             })
         }
     }
+
     return (
         <View style={styles.root}>
             <Text>Dashboard</Text>

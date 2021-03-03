@@ -17,14 +17,15 @@ const Home: React.FC<Props> = (props) => {
       const data = await getData('default')
       const list = convertToArray(data)
       setList(list)
-
     }
 
     fetchLocalData()
   }, [])
+
+  //if (list.length < 0) return <>Loading...</>
   return (
     <View style={styles.root}>
-      <Text />
+      <Text>hello</Text>
       <SafeAreaView style={styles.listContainer}>
         <MyList data={list} />
       </SafeAreaView>
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'grey',
+    backgroundColor: '#CCCCCC',
   },
   listContainer: {
     marginTop: 100,

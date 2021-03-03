@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center', //Justify content center on the oppsosite of main axis
-        backgroundColor: 'yellow',
+        backgroundColor: '#FFFB24',
         borderRadius: 25,
     },
     container: {

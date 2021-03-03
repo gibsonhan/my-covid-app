@@ -11,7 +11,11 @@ import { signInWithEmailAndPassword } from '../util/accountHelper'
 
 import Toast from 'react-native-toast-message'
 
-function SignIn() {
+export interface signInInteface {
+    onSuccessNav: () => void
+}
+
+function SignIn({ onSuccessNav }: signInInteface) {
     //context
     const store = useContext(Context)
     const { SIGN_IN } = store.DISPATCH
@@ -19,7 +23,6 @@ function SignIn() {
     const [initializing, setInitializing] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
     //init firebase
     useEffect(() => {
         const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
@@ -35,7 +38,8 @@ function SignIn() {
             const resposne = await signInWithEmailAndPassword(inputs)
             if (resposne.error) throw resposne
 
-            console.log('passing response', resposne)
+            if (resposne) {
+            }
         }
         catch (error) {
             Toast.show({
@@ -52,8 +56,10 @@ function SignIn() {
     async function onAuthStateChanged(user: any) {
         if (initializing) setInitializing(false);
         if (user) {
+            console.log('what is user from on Auth State Change', user)
             const currIdToken = await firebase.auth().currentUser?.getIdToken()
             await SIGN_IN(currIdToken)
+            await onSuccessNav()
         }
     }
 

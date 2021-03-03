@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
-        backgroundColor: 'gray'
+        backgroundColor: '#CCCCCC'
     },
     listContainer: {
         height: Dimensions.get('window').height - 300,
