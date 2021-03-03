@@ -27,9 +27,10 @@ export const TOTAL_RESULT_INCR = "totalTestResultsIncrease"
 
 export default UnitedStateTitle = {
     [DATE]: 'Date',
+    [HASH]: 'Hash',
     [DATE_CHECKED]: 'Date Checked',
     [DEATH]: 'Death',
-    [DEATH_INCREASE]: 'DEATH INCREASE',
+    [DEATH_INCREASE]: 'Death Increase',
     [HOSPITALIZED]: 'Hospitalized',
     [HOSPITALIZED_CUMULATIVE]: 'Cumulative Hospitalized',
     [HOSPITALIZED_CURR]: 'Currently Hospitalized',

@@ -4,19 +4,25 @@ const storeData = async (key: string, value: object) => {
     try {
         await AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
-        // saving error
+        return {
+            error: true,
+            message: 'Failed to save data'
+        }
     }
 };
 
 const getData = async (key: string) => {
     try {
         const value = await AsyncStorage.getItem(key);
-        if (value !== null) {
+        if (value == null) throw Error
+        else {
             return JSON.parse(value);
-            // value previously stored
         }
     } catch (e) {
-        // error reading value
+        return {
+            error: true,
+            message: `Local data does not exist, please check your key:${key}`
+        }
     }
 };
 
