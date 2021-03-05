@@ -36,14 +36,14 @@ async function fetchCovidData(search: string) {
         ? await fetchCovidDataByZip(search)
         : await fetchCovidByState(search);
 
-    const newData = await filterObject(response);
-    const avgLongAndLat = await findAvgLongLat(newData.state);
+    console.log('what is response', response)
+    const avgLongAndLat = await findAvgLongLat(response.state);
 
     if (response.error) {
         return { ...response };
     } else {
         return {
-            ...newData,
+            ...response,
             ...avgLongAndLat
         };
     }

@@ -15,8 +15,8 @@ function MyList(props: MyListInterface) {
     }
 
     const Item = ({ title, value }: itemTypes) => {
-        const notHaveTitle = !USHEALTH[title] || USHEALTH[title] === null || USHEALTH[title] === 'null'
-        if (notHaveTitle || value === 'null') return <></>
+        //const notHaveTitle = !USHEALTH[title] || USHEALTH[title] === null || USHEALTH[title] === 'null'
+        //if (notHaveTitle || value === 'null') return <></>
         return (
             <View style={styles.item}>
                 <Text style={styles.title}>{USHEALTH[title]}</Text>

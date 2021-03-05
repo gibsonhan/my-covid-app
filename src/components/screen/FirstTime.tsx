@@ -48,6 +48,7 @@ function FirstTime() {
   const fetchData = async () => {
     try {
       const response = await fetchCovidData(search);
+      console.log('what is response', response)
       if (response.error) throw response;
 
       const { latitude, longitude } = response

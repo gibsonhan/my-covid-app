@@ -25,7 +25,6 @@ const Home: React.FC<Props> = (props) => {
   //if (list.length < 0) return <>Loading...</>
   return (
     <View style={styles.root}>
-      <Text>hello</Text>
       <SafeAreaView style={styles.listContainer}>
         <MyList data={list} />
       </SafeAreaView>

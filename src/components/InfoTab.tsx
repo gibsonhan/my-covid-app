@@ -56,7 +56,7 @@ const InfoTab = (props: InfoTabInterface) => {
     //Save data to default local
     const handleSaveDefault = async () => {
         try {
-            await storeData('default', data)
+            await storeData('state', data)
         }
         catch (error) {
             console.log('failed to store local Data')

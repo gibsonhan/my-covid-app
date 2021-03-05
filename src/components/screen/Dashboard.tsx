@@ -15,6 +15,7 @@ const Dashboard = ({ navigation }: any) => {
     const { SIGN_OUT } = store.DISPATCH
 
     const [countrySetting, setCountrySetting] = useState([])
+    const [stateSetting, setStateSetting] = useState([])
 
     const handleSaveSetting = async () => {
         await storeData('COUNTRY_SETTING', countrySetting)
@@ -74,6 +75,25 @@ const Dashboard = ({ navigation }: any) => {
         getCountrySetting()
     }, [])
 
+    useEffect(() => {
+        async function fetchStateData() {
+            /** {} object
+             *  [{}, {}, {}] - need to covert to array
+             *  [ add new property called nable] 
+             */
+            const response = await getData('state')
+            const stateListSetting = convertToArray(response)
+
+            const newStateListSetting = stateListSetting.map(ele => {
+                return { ...ele, isEnabled: true }
+            })
+
+            setStateSetting(newStateListSetting)
+        }
+
+        fetchStateData()
+    }, [])
+
     const renderItem = (props) => {
         const { index, item } = props
         return <MySwitch key={item.key} index={index} {...item} countrySetting={countrySetting} setCountrySetting={setCountrySetting} />
@@ -81,11 +101,16 @@ const Dashboard = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={styles.root}>
-            <FlatList
+            {false && <FlatList
                 data={countrySetting}
                 renderItem={renderItem}
                 keyExtractor={item => item.key}
-            />
+            />}
+            {true && <FlatList
+                data={stateSetting}
+                renderItem={renderItem}
+                keyExtractor={item => item.key}
+            />}
             <View style={styles.settingButton__container}>
                 <Bttn title="save setting" height={60} width={120} onPress={handleSaveSetting} />
                 <Bttn title="reset setting" height={60} width={120} onPress={handleResetSettings} />

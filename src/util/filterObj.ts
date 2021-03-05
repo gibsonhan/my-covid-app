@@ -42,38 +42,16 @@ export function extractObject(list, obj) {
 }
 
 //TODO need to generalize this function
-export default function filterObject(data: object): filterInterface {
+export default function filterObject(data: {}, filterList: {}): object {
     //TODO need to fix this typescript
-    const {
-        date,
-        lastUpdateEt,
-        state,
-        dataQualityGrade,
-        positiveIncrease,
-        positive,
-        hospitalizedIncrease,
-        hospitalizedCurrently,
-        onVentilatorCurrently,
-        inIcuCurrently,
-        death,
-        deathIncrease
-    }: filterInterface = data;
+    let newData = {}
 
-    const newData = {
-        dataQualityGrade,
-        death,
-        deathIncrease,
-        positive,
-        hospitalizedIncrease,
-        hospitalizedCurrently,
-        onVentilatorCurrently,
-        inIcuCurrently,
-        state,
-        positiveIncrease,
-        date,
-        lastUpdateEt,
-
-    };
+    for (const [key, value] of Object.entries(data)) {
+        //if key is NOT in filter List add key:value pair into new object
+        if (!filterList[key]) {
+            newData = { ...newData, [key]: value }
+        }
+    }
 
     return newData;
 }
