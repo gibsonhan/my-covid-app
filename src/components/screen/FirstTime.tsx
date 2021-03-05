@@ -10,6 +10,7 @@ import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData'
 import initGeoPos from '../../reserve/map/initGeoPos'
 import { getData, storeData } from "../../util/localDataHelper"
 //reserved words
+import { COUNTRY } from '../../reserve/data/data'
 import { DATE_CHECKED } from '../../reserve/health/unitedState'
 
 function FirstTime() {
@@ -20,7 +21,7 @@ function FirstTime() {
   //Load INIT COVID DATA OF ENTIRE US
   useEffect(() => {
     async function fetchData() {
-      const localData = await getData('US')
+      const localData = await getData(COUNTRY)
       const localDataDate = localData[DATE_CHECKED].slice(0, 10)
       const today = formatISO(new Date()).slice(0, 10)
 
@@ -34,7 +35,7 @@ function FirstTime() {
           console.log('does not have local data')
           const response = await fetchCovidByCountry()
           setData(() => response)
-          storeData('US', response)
+          storeData(COUNTRY, response)
         }
         catch (error) {
           console.log('failed to fetch COVID data for united states')

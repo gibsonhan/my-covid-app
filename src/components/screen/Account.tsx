@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 
 import Toast from 'react-native-toast-message'
 import SignIn from '../SignIn.native'
-
 //TODO fix that naviation erro
 interface AccountInterface {
     navigation: any

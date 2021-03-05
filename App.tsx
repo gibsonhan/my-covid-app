@@ -1,5 +1,4 @@
 //import './wdyr'; // <--- first import
-
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,7 +11,7 @@ import Dashboard from "./src/components/screen/Dashboard";
 import FirstTime from "./src/components/screen/FirstTime";
 import Feedback from "./src/components/screen/Feedback";
 import Home from "./src/components/screen/Home";
-import RegisterModal from './src/components/modal/RegisterModal.native'
+import RegisterModal from './src/components/modal/RegisterModal.native';
 //functions
 import { iconSelector } from './src/util/iconSelector'
 
@@ -48,8 +47,8 @@ export default function App() {
       >
         <BottomTab.Screen name="COVID" component={FirstTime} />
         <BottomTab.Screen name="Home" component={Home} />
-        { !hasToken && <BottomTab.Screen name="Login" component={Account} />}
-        { hasToken && <BottomTab.Screen name="Dashboard" component={Dashboard} />}
+        {!hasToken && <BottomTab.Screen name="Login" component={Account} />}
+        {hasToken && <BottomTab.Screen name="Dashboard" component={Dashboard} />}
         <BottomTab.Screen name="Feedback" component={Feedback} />
       </BottomTab.Navigator>
     )

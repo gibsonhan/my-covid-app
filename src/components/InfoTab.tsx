@@ -8,7 +8,7 @@ import MyList from './common/MyList';
 //helper util
 import { convertToArray } from '../util/objToArray';
 import { storeData } from '../util/localDataHelper'
-import USHEALTH from '../reserve/health/unitedState'
+
 export interface InfoTabInterface {
     data: {}
 }

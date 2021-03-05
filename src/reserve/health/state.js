@@ -60,7 +60,7 @@ export const TOTAL_TEST_VIRAL = 'totalTestsViral'
 export const TOTAL_RESULT = "totalTestResults"
 export const DEPRECATED = 'deprecated'
 
-export default STATE_TABLE = {
+export default StateTitle = {
     [CHECK_TIME_EST]: DEPRECATED,
     [COMMERICAL]: DEPRECATED,
     [DATA_QUALITY]: 'Quality of Data',
