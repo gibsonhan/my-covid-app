@@ -6,7 +6,7 @@ import InfoTab from '../InfoTab'
 import Map from '../Map'
 import SearchInput from '../../SearchInput'
 //helper util
-import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData';
+import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData'
 import initGeoPos from '../../reserve/map/initGeoPos'
 import { getData, storeData } from "../../util/localDataHelper"
 //reserved words

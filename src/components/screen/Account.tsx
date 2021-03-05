@@ -10,11 +10,10 @@ interface AccountInterface {
 }
 function Account({ navigation }: AccountInterface) {
     const handleRegNavigation = () => navigation.navigate('Modal')
-    const handleDashNavigation = async () => await navigation.navigate('Dashboard')
     return (
         <View style={styles.root}>
             <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
-            <SignIn onSuccessNav={handleDashNavigation} />
+            <SignIn />
             <View>
                 <Text> Don't Have an Account? </Text>
                 <Text onPress={handleRegNavigation}>Sign Up Here</Text>

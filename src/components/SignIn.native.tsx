@@ -1,24 +1,22 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+//libaries
+import Toast from 'react-native-toast-message'
+import { useNavigation } from '@react-navigation/native'
 //components
 import Bttn from './common/Bttn'
 import Input from './common/Input'
 //helper util
-
 import { Context } from '../store/AppContext'
 import firebase from '../util/firebaseHelper'
 import { signInWithEmailAndPassword } from '../util/accountHelper'
 
-import Toast from 'react-native-toast-message'
 
-export interface signInInteface {
-    onSuccessNav: () => void
-}
-
-function SignIn({ onSuccessNav }: signInInteface) {
+function SignIn() {
     //context
     const store = useContext(Context)
     const { SIGN_IN } = store.DISPATCH
+    const navigation = useNavigation()
     //state
     const [initializing, setInitializing] = useState(true)
     const [email, setEmail] = useState('')
@@ -59,7 +57,7 @@ function SignIn({ onSuccessNav }: signInInteface) {
             console.log('what is user from on Auth State Change', user)
             const currIdToken = await firebase.auth().currentUser?.getIdToken()
             await SIGN_IN(currIdToken)
-            await onSuccessNav()
+            navigation.navigate('Dashboard')
         }
     }
 
