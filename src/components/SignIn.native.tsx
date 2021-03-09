@@ -35,9 +35,6 @@ function SignIn() {
             const inputs = { email, password }
             const resposne = await signInWithEmailAndPassword(inputs)
             if (resposne.error) throw resposne
-
-            if (resposne) {
-            }
         }
         catch (error) {
             Toast.show({

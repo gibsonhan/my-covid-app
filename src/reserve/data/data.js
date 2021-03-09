@@ -1,4 +1,4 @@
-export const COUNTRY = 'counttry'
+export const COUNTRY = 'country'
 export const COUNTRY_SETTING = 'country setting'
 export const STATE = 'state'
 export const STATE_SETTING = 'state setting'

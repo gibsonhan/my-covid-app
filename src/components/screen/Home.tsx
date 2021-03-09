@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dimensions, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 import MyList from '../common/MyList'
-import { getData } from "../../util/localDataHelper";
+import { getData } from '../../store/localDataHelper';
 import { convertToArray } from "../../util/objToArray";
 
 export interface Props {

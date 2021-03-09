@@ -5,7 +5,7 @@ import Bttn from '../components/common/Bttn'
 import MySwitch from '../components/common/MySwitch'
 //helper util
 import { convertToArray } from '../util/objToArray'
-import { getData, storeData } from "../util/localDataHelper"
+import { getData, storeData } from '../store/localDataHelper'
 //Data
 import { COUNTRY, COUNTRY_SETTING, DEPRECATED, STATE, STATE_SETTING } from '../reserve/data/data'
 import US_HEATH_TABLE from '../reserve/health/unitedState'
@@ -64,7 +64,7 @@ function SettingList({ route }: any) {
 
 
         getLocalList()
-        if (name === 'Country') {
+        if (name === COUNTRY) {
             getCountrySetting()
             fetchStateData()
         }
@@ -73,7 +73,7 @@ function SettingList({ route }: any) {
     const renderItem = (props) => {
         const { index, item } = props
         const { title } = item
-        const TABLE = name === 'Country' ? US_HEATH_TABLE : STATE_HEALTH_TABLE
+        const TABLE = name === COUNTRY ? US_HEATH_TABLE : STATE_HEALTH_TABLE
         if (TABLE[title] === undefined || TABLE[title] === DEPRECATED) return <></>
         return (
             <MySwitch

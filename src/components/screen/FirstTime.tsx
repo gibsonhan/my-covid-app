@@ -8,10 +8,11 @@ import SearchInput from '../../SearchInput'
 //helper util
 import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData'
 import initGeoPos from '../../reserve/map/initGeoPos'
-import { getData, storeData } from "../../util/localDataHelper"
+import { getData, storeData } from '../../store/localDataHelper'
 //reserved words
 import { COUNTRY } from '../../reserve/data/data'
 import { DATE_CHECKED } from '../../reserve/health/unitedState'
+import Toast from "react-native-toast-message";
 
 function FirstTime() {
   const [data, setData] = useState({});
@@ -75,6 +76,7 @@ function FirstTime() {
 
   return (
     <View style={styles.root}>
+      <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
       <Map geoPosition={geoPosition} />
       <SearchInput
         props={{
@@ -98,6 +100,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: 'red',
   },
+  toast: {
+    zIndex: 2,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+  }
 });
 
 export default FirstTime;

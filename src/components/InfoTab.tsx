@@ -7,7 +7,7 @@ import MyList from './common/MyList';
 
 //helper util
 import { convertToArray } from '../util/objToArray';
-import { storeData } from '../util/localDataHelper'
+import { storeData } from '../store/localDataHelper'
 
 export interface InfoTabInterface {
     data: {}

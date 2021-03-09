@@ -1,4 +1,4 @@
-import { storeData } from './localDataHelper';
+import { storeData } from '../store/localDataHelper';
 import filterObject from './filterObj';
 import findAvgLongLat from './findAvgLongLat';
 import findStateCode from './findStateCode';

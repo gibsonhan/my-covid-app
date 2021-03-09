@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react'
 const initData = {
-    count: 0,
     idToken: '',
+    default: '',
+    country: {},
+    state: {},
+    zip: {},
+    searchHistory: {
+        date: '',
+        query: '',
+    }
 }
 
 function reducer(state: object, payload: object) {
@@ -21,7 +28,9 @@ function reducer(state: object, payload: object) {
 const Context = React.createContext(null)
 const AppContext: React.FC<{}> = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initData)
+    //data handler
 
+    //account handlers
     const SIGN_IN = async (idToken: string) => {
         console.log('sign in')
         await dispatch({
