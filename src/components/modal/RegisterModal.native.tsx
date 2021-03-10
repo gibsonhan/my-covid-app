@@ -22,12 +22,9 @@ function RegisterModal({ navigation }: any) {
             const inputs = { email, password, password2 }
             const response = await registerWithEmailAndPassword(inputs)
             if (response.error) throw response
-
-            console.log('checking response', response)
             navigation.navigate('Dashboard')
         }
         catch (error) {
-            console.log('what is error', error)
             Toast.show({
                 type: 'error',
                 position: 'top',

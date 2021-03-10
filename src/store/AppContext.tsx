@@ -32,7 +32,6 @@ const AppContext: React.FC<{}> = ({ children }) => {
 
     //account handlers
     const SIGN_IN = async (idToken: string) => {
-        console.log('sign in')
         await dispatch({
             type: 'Sign In',
             data: idToken
@@ -40,7 +39,6 @@ const AppContext: React.FC<{}> = ({ children }) => {
     }
 
     const SIGN_OUT = async () => {
-        console.log('sign out')
         await dispatch({
             type: 'Sign Out',
             data: 'None'

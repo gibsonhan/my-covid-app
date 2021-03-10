@@ -5,12 +5,8 @@ import MyList from '../common/MyList'
 import { getData } from '../../store/localDataHelper';
 import { convertToArray } from "../../util/objToArray";
 
-export interface Props {
-  name: string;
-  test?: number;
-}
 
-const Home: React.FC<Props> = (props) => {
+function Home() {
   const [list, setList] = useState([])
   useEffect(() => {
     async function fetchLocalData() {

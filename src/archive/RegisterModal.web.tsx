@@ -8,7 +8,7 @@ interface RegisterInterface {
     navigation: any
 }
 
-const RegisterModal: React.FC<RegisterInterface> = ({ navigation }) => {
+function RegisterModal({ navigation }: RegisterInterface) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');

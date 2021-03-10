@@ -36,7 +36,6 @@ async function fetchCovidData(search: string) {
         ? await fetchCovidDataByZip(search)
         : await fetchCovidByState(search);
 
-    console.log('what is response', response)
     const avgLongAndLat = await findAvgLongLat(response.state);
 
     if (response.error) {

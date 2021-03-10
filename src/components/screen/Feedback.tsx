@@ -2,7 +2,7 @@ import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { openForm } from "../../util/openFeedbackForm"
 
-const Feedback: React.FC<{}> = () => {
+function Feedback() {
   const handleOpenForm = () => openForm();
 
   return (

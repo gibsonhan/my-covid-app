@@ -10,7 +10,7 @@ export interface SearchInputInterface {
 	fetchData: () => void;
 	value?: string;
 }
-const SearchInput: React.FunctionComponent<{ props: SearchInputInterface }> = ({ props }) => {
+function SearchInput(props: SearchInputInterface) {
 	const { fetchData, setText, value } = props;
 	return (
 		<View style={styles.root}>

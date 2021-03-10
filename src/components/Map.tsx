@@ -2,20 +2,21 @@ import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 
-export interface geoPositionInterface {
+export interface MapInterface {
     latitude: number,
     longitude: number,
     latitudeDelta: number,
     longitudeDelta: number
 }
 
-const Map: React.FunctionComponent<{ geoPosition: geoPositionInterface }> = ({ geoPosition }) => {
-    if (!geoPosition) return <>Loading... </>
+function Map(props: MapInterface) {
+
+    if (!props) return <>Loading... </>
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.map}
-                region={{ ...geoPosition }}
+                region={{ ...props }}
             >
             </MapView>
         </View >

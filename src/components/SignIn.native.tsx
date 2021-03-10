@@ -51,7 +51,6 @@ function SignIn() {
     async function onAuthStateChanged(user: any) {
         if (initializing) setInitializing(false);
         if (user) {
-            console.log('what is user from on Auth State Change', user)
             const currIdToken = await firebase.auth().currentUser?.getIdToken()
             await SIGN_IN(currIdToken)
             navigation.navigate('Dashboard')

@@ -27,13 +27,11 @@ function FirstTime() {
       const today = formatISO(new Date()).slice(0, 10)
 
       if (localData && localDataDate === today) {
-        console.log('has local data', localData)
         setData(localData)
         return
       }
       else {
         try {
-          console.log('does not have local data')
           const response = await fetchCovidByCountry()
           setData(() => response)
           storeData(COUNTRY, response)
@@ -48,9 +46,9 @@ function FirstTime() {
   }, [])
 
   const fetchData = async () => {
+    console.log('we are going to fetch data')
     try {
       const response = await fetchCovidData(search);
-      console.log('what is response', response)
       if (response.error) throw response;
 
       const { latitude, longitude } = response
@@ -77,14 +75,8 @@ function FirstTime() {
   return (
     <View style={styles.root}>
       <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
-      <Map geoPosition={geoPosition} />
-      <SearchInput
-        props={{
-          fetchData,
-          setText,
-          value: search
-        }}
-      />
+      <Map {...geoPosition} />
+      <SearchInput {...{ fetchData, setText, value: search }} />
       <InfoTab data={data} />
     </View >
   );

@@ -8,13 +8,9 @@ import SignOut from '../SignOut'
 import { Context } from '../../store/AppContext'
 import { COUNTRY, STATE, ZIP } from '../../reserve/data/data'
 
-const Dashboard = () => {
+function Dashboard() {
     const store = useContext(Context)
     const TopTab = createMaterialTopTabNavigator();
-    useEffect(() => {
-        console.log('what is the data', store.state)
-    }, [])
-
     const { zip, state, idToken } = store.state
     return (
         <SafeAreaView style={{ backgroundColor: 'yellow', flex: 1 }}>

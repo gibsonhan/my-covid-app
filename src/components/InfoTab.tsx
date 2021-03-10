@@ -13,7 +13,7 @@ export interface InfoTabInterface {
     data: {}
 }
 
-const InfoTab = (props: InfoTabInterface) => {
+function InfoTab(props: InfoTabInterface) {
     const { data } = props
     const [healthList, setHealthList] = useState()
     const [fullScreen, setFullScreen] = useState(false)

@@ -11,7 +11,7 @@ import {
   signInWithTwitter
 } from "./accountHelper.web"
 
-const Account: React.FC<{}> = ({ navigation }: any) => {
+function Account({ navigation }: any) {
   const store = useContext(Context)
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(false);
