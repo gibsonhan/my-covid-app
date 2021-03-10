@@ -11,7 +11,6 @@ import { Context } from '../store/AppContext'
 import firebase from '../util/firebaseHelper'
 import { signInWithEmailAndPassword } from '../util/accountHelper'
 
-
 function SignIn() {
     //context
     const store = useContext(Context)

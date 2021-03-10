@@ -21,32 +21,32 @@ function FirstTime() {
 
   //Load INIT COVID DATA OF ENTIRE US
   useEffect(() => {
-    async function fetchData() {
-      const localData = await getData(COUNTRY)
-      const localDataDate = localData[DATE_CHECKED].slice(0, 10)
-      const today = formatISO(new Date()).slice(0, 10)
+    async function fetchCountryCOVID() {
+      const response = await fetchCovidByCountry()
+      setData(response)
+      //storeData(COUNTRY, response)
+    }
+    async function checkLocalData() {
+      try {
+        const localData = await getData(COUNTRY)
+        if (localData.error) throw localData
 
-      if (localData && localDataDate === today) {
+        const localDataDate = localData[DATE_CHECKED].slice(0, 10)
+        const todayDate = formatISO(new Date()).slice(0, 10)
+        const localDataFresh = localDataDate === todayDate
+        if (!localDataFresh) throw { message: 'data is not fresh' }
+
         setData(localData)
-        return
-      }
-      else {
-        try {
-          const response = await fetchCovidByCountry()
-          setData(() => response)
-          storeData(COUNTRY, response)
-        }
-        catch (error) {
-          console.log('failed to fetch COVID data for united states')
-        }
+      } catch (error) {
+        console.log('error', error.message)
+        await fetchCountryCOVID()
       }
     }
 
-    fetchData()
+    checkLocalData()
   }, [])
 
-  const fetchData = async () => {
-    console.log('we are going to fetch data')
+  const handleFetchData = async () => {
     try {
       const response = await fetchCovidData(search);
       if (response.error) throw response;
@@ -76,7 +76,7 @@ function FirstTime() {
     <View style={styles.root}>
       <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
       <Map {...geoPosition} />
-      <SearchInput {...{ fetchData, setText, value: search }} />
+      <SearchInput {...{ handleFetchData, setText, value: search }} />
       <InfoTab data={data} />
     </View >
   );

@@ -7,11 +7,11 @@ import CenterIcon from "./components/common/CenterIcon";
 
 export interface SearchInputInterface {
 	setText: (text: string) => void;
-	fetchData: () => void;
+	handleFetchData: () => void;
 	value?: string;
 }
 function SearchInput(props: SearchInputInterface) {
-	const { fetchData, setText, value } = props;
+	const { handleFetchData, setText, value } = props;
 	return (
 		<View style={styles.root}>
 			<View style={styles.search}>
@@ -25,7 +25,7 @@ function SearchInput(props: SearchInputInterface) {
 			</View>
 			<Bttn
 				title="Search"
-				onPress={fetchData}
+				onPress={handleFetchData}
 				height={40}
 				width={80}
 				style={{ marginTop: 10 }}
