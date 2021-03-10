@@ -9,4 +9,4 @@ export const ZIP = 'zip'
 export const ZIP_SETTING = 'zip setting'
 
 export const DEFAULT_US = 'DEFAULT_US'
-export const DEPRECATED = 'deprecated'
+export const DEPRECIATED = 'depreciated'

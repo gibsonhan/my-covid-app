@@ -1,3 +1,4 @@
+import { DEPRECIATED } from '../data/data'
 //TODO need to migrate to new CDC data
 export const DATE = 'date'
 export const DATE_CHECKED = "dateChecked"
@@ -43,12 +44,12 @@ export default UnitedStateTitle = {
     [ON_VENT_CUMULATIVE]: 'Cumulative people on Ventilator',
     [ON_VENT_CURR]: 'Currently on Ventilator',
     [PENDING]: 'Pending PCR Test',
-    [DEPRE_POS_AND_NEG]: null,
+    [DEPRE_POS_AND_NEG]: DEPRECIATED,
     [POSITIVE]: 'Positive Cases',
     [POSITIVE_INCREASE]: 'Increase in Positive Cases',
     [RECOVERED]: 'Recovered',
     [NUM_STATE]: 'States',
-    [DEPRE_TOTAL]: null,
+    [DEPRE_TOTAL]: DEPRECIATED,
     [TOTAL_RESULT]: 'Total Results',
     [TOTAL_RESULT_INCR]: 'Increase in Total Results'
 }

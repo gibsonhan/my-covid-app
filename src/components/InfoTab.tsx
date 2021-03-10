@@ -8,14 +8,15 @@ import MyList from './common/MyList';
 //helper util
 import { convertToArray } from '../util/objToArray';
 import { storeData } from '../store/localDataHelper'
+import { DEFAULT } from '../reserve/data/data'
 
 export interface InfoTabInterface {
-    data: {}
+    list?: {},
+    listType: ''
 }
 
 function InfoTab(props: InfoTabInterface) {
-    const { data } = props
-    const [healthList, setHealthList] = useState()
+    const { list, listType } = props
     const [fullScreen, setFullScreen] = useState(false)
 
     //Current Bottom Nav is 48px + 12px Padding Top = 60. 
@@ -23,12 +24,6 @@ function InfoTab(props: InfoTabInterface) {
     const startTop = Dimensions.get('window').height - (80 + 40);
     const endTop = 160;
     const topAnim = useRef(new Animated.Value(startTop)).current;
-
-    //convert obj data into Array
-    useEffect(() => {
-        const list = convertToArray(data)
-        setHealthList(list)
-    }, [data])
 
     //animation, moves info Tab down
     const handleMoveDown = () => {
@@ -55,12 +50,7 @@ function InfoTab(props: InfoTabInterface) {
 
     //Save data to default local
     const handleSaveDefault = async () => {
-        try {
-            await storeData('state', data)
-        }
-        catch (error) {
-            console.log('failed to store local Data')
-        }
+
     }
 
     return (
@@ -94,7 +84,7 @@ function InfoTab(props: InfoTabInterface) {
             }
             {fullScreen &&
                 <SafeAreaView style={styles.listContainer}>
-                    <MyList data={healthList} />
+                    <MyList {...{ list, listType }} />
                 </SafeAreaView>
             }
         </Animated.View >

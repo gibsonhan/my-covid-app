@@ -1,36 +1,44 @@
 import React from 'react'
-import { Dimensions, FlatList, StyleSheet, Text, ListRenderItemInfo, View } from 'react-native'
+import { FlatList, StyleSheet, Text, ListRenderItemInfo, View } from 'react-native'
+import { COUNTRY, DEPRECRIATED, STATE, ZIP } from '../../reserve/data/data'
 
 import USHEALTH from '../../reserve/health/unitedState'
+import STATEHEALTH from '../../reserve/health/state'
+import { convertToArray } from '../../util/objToArray'
 
 export interface MyListInterface {
-    data?: Array<{}>,
+    list?: {},
+    listType?: string,
 }
 
 function MyList(props: MyListInterface) {
-    const { data } = props
+    const { list, listType } = props
+
     type itemTypes = {
+        table: { [key: string]: string }
         title: string,
         value: string,
     }
 
-    const Item = ({ title, value }: itemTypes) => {
-        //const notHaveTitle = !USHEALTH[title] || USHEALTH[title] === null || USHEALTH[title] === 'null'
-        //if (notHaveTitle || value === 'null') return <></>
+    const Item = ({ title, value, table }: itemTypes) => {
         return (
             <View style={styles.item}>
-                <Text style={styles.title}>{USHEALTH[title]}</Text>
+                <Text style={styles.title}>{table[title]}</Text>
                 <Text >{value}</Text>
             </View>
         );
     };
 
-    const renderItem = ({ item }: ListRenderItemInfo<any>) => (
-        <Item key={item.key} title={item.title} value={item.value} />
-    );
+    const renderItem = ({ item }: ListRenderItemInfo<any>) => {
+        const { key, title, value } = item
+        const TABLE = listType === COUNTRY ? USHEALTH : STATEHEALTH
+        const isInvalid = TABLE[title] === 'depreciated'
+        if (isInvalid) return <></>
+        return <Item key={key} {...{ title, value }} table={TABLE} />
+    }
     return (
         <FlatList
-            data={data}
+            data={convertToArray(list)}
             initialNumToRender={4}
             renderItem={(ele) => renderItem(ele)}
             keyExtractor={item => item.key}

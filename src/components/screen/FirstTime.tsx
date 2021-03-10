@@ -13,9 +13,11 @@ import { getData, storeData } from '../../store/localDataHelper'
 import { COUNTRY } from '../../reserve/data/data'
 import { DATE_CHECKED } from '../../reserve/health/unitedState'
 import Toast from "react-native-toast-message";
+import { convertToArray } from "../../util/objToArray";
 
 function FirstTime() {
-  const [data, setData] = useState({});
+  const [list, setList] = useState({});
+  const [listType, setListType] = useState('')
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
   const [search, setSearchInput] = useState("");
 
@@ -23,19 +25,21 @@ function FirstTime() {
   useEffect(() => {
     async function fetchCountryCOVID() {
       const response = await fetchCovidByCountry()
-      setData(response)
+      setList(response)
+      setListType(COUNTRY)
       storeData(COUNTRY, response)
     }
     async function checkLocalData() {
       try {
         const localData = await getData(COUNTRY)
+        console.log('what is localData', typeof localData)
         if (localData.error) throw localData
 
         const localDataDate = localData[DATE_CHECKED].slice(0, 10)
         const todayDate = formatISO(new Date()).slice(0, 10)
         const localDataFresh = localDataDate === todayDate
 
-        if (localDataFresh) setData(localData)
+        if (localDataFresh) setList(localData)
         else throw { message: 'data is not fresh' }
 
       } catch (error) {
@@ -61,7 +65,7 @@ function FirstTime() {
       }
 
       setGeoPosition(newGeoPosition)
-      setData(() => response)
+      setList(response)
     }
     catch (err) {
       console.log('err', err)
@@ -78,7 +82,7 @@ function FirstTime() {
       <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
       <Map {...geoPosition} />
       <SearchInput {...{ handleFetchData, setText, value: search }} />
-      <InfoTab data={data} />
+      <InfoTab {...{ list, listType }} />
     </View >
   );
 };
