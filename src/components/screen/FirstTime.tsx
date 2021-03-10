@@ -24,7 +24,7 @@ function FirstTime() {
     async function fetchCountryCOVID() {
       const response = await fetchCovidByCountry()
       setData(response)
-      //storeData(COUNTRY, response)
+      storeData(COUNTRY, response)
     }
     async function checkLocalData() {
       try {
@@ -34,9 +34,10 @@ function FirstTime() {
         const localDataDate = localData[DATE_CHECKED].slice(0, 10)
         const todayDate = formatISO(new Date()).slice(0, 10)
         const localDataFresh = localDataDate === todayDate
-        if (!localDataFresh) throw { message: 'data is not fresh' }
 
-        setData(localData)
+        if (localDataFresh) setData(localData)
+        else throw { message: 'data is not fresh' }
+
       } catch (error) {
         console.log('error', error.message)
         await fetchCountryCOVID()

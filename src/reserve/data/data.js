@@ -1,3 +1,5 @@
+export const DEFAULT = 'default'
+
 export const COUNTRY = 'country'
 export const COUNTRY_SETTING = 'country setting'
 export const STATE = 'state'

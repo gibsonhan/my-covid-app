@@ -4,18 +4,28 @@ import { Dimensions, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import MyList from '../common/MyList'
 import { getData } from '../../store/localDataHelper';
 import { convertToArray } from "../../util/objToArray";
-
+import { COUNTRY, DEFAULT } from '../../reserve/data/data'
 
 function Home() {
   const [list, setList] = useState([])
   useEffect(() => {
-    async function fetchLocalData() {
-      const data = await getData('default')
-      const list = convertToArray(data)
+    async function fetchData() {
+      let data = {}
+      let list = [{}]
+      //IF there is no default, set coutry as deefault data
+      try {
+        data = await getData(DEFAULT)
+        if (data.error) throw data
+      }
+      catch (error) {
+        data = await getData(COUNTRY)
+      }
+
+      list = convertToArray(data)
       setList(list)
     }
 
-    fetchLocalData()
+    fetchData()
   }, [])
 
   //if (list.length < 0) return <>Loading...</>
