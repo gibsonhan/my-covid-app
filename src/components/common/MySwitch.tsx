@@ -4,44 +4,43 @@ import { StyleSheet, Switch, Text, View } from 'react-native'
 export interface MySwitchInterface {
     index: number,
     title: string,
-    isEnabled: boolean,
+    value: boolean,
     settingList: Array<{}>,
     setSettingList: React.Dispatch<React.SetStateAction<never[]>>,
     DATA_TABLE: object
 }
 
 function MySwitch(props: MySwitchInterface) {
-    const { index, isEnabled, title, settingList, setSettingList, DATA_TABLE } = props
-    const [toggleSwitch, setToggleSwitch] = useState(isEnabled)
-
+    const { index, title, value, settingList, setSettingList, DATA_TABLE } = props
+    const [toggleSwitch, setToggleSwitch] = useState(value)
     const handleToggleSwitch = () => {
-        //create new Object with !toggle value
-        const newObj = {
+        const newObject = {
             ...settingList[index],
-            isEnabled: !toggleSwitch
+            value: !toggleSwitch
         }
-        setToggleSwitch(props => !props)            //update toggle value
-        const newListSetting = settingList    //create new settingList
-        newListSetting[index] = newObj           //update specific index
 
-        setSettingList(newListSetting)
+        const newList = settingList.map((ele, i) => {
+            return i === index
+                ? newObject
+                : ele
+        })
+        console.log('what is newList', newList)
+        setSettingList(newList)
     }
 
     useEffect(() => {
-        //TODO need to refactor state to handle reset, and prevent constant refiring
-        const currObj = settingList[index]
-        const state = currObj.isEnabled
+        const state = settingList[index].value
         setToggleSwitch(state)
     }, [settingList])
 
     return <View style={styles.root}>
         <Text>{DATA_TABLE[title]}</Text>
-        <Switch
+        {props && <Switch
             trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={toggleSwitch ? "#f5dd4b" : "#f4f3f4"}
+            thumbColor={value ? "yellow" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={handleToggleSwitch}
-            value={toggleSwitch} />
+            value={toggleSwitch} />}
     </View>
 }
 

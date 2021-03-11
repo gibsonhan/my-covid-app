@@ -19,7 +19,7 @@ function FirstTime() {
   const [list, setList] = useState({});
   const [listType, setListType] = useState('')
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
-  const [search, setSearchInput] = useState("");
+  const [search, setSearchInput] = useState('');
 
   //Load INIT COVID DATA OF ENTIRE US
   useEffect(() => {

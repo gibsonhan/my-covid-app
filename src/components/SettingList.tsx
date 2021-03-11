@@ -7,85 +7,67 @@ import MySwitch from '../components/common/MySwitch'
 import { convertToArray } from '../util/objToArray'
 import { getData, storeData } from '../store/localDataHelper'
 //Data
-import { COUNTRY, COUNTRY_SETTING, DEPRECATED, STATE, STATE_SETTING } from '../reserve/data/data'
+import { COUNTRY, SETTING, STATE, ZIP } from '../reserve/data/data'
 import US_HEATH_TABLE from '../reserve/health/unitedState'
 import STATE_HEALTH_TABLE from '../reserve/health/state.js'
 
 function SettingList({ route }: any) {
     const { name } = route
-    const [settingList, setSettingList] = useState([])
+    const [settingList, setSettingList] = useState()
 
     const handleSaveSetting = async () => {
-        name === 'Country'
-            ? await storeData(COUNTRY_SETTING, settingList)
-            : await storeData(STATE_SETTING, settingList)
+
     }
 
     const handleResetSettings = async () => {
-        const resposne = await getData(COUNTRY)
-        const globalListSetting = convertToArray(resposne)
-
-        //append isEnable: boolean into arrary w/ type object
-        const newSettingList = globalListSetting.map(ele => {
-            return { ...ele, isEnabled: true }
-        })
-        setSettingList(props => newSettingList)
-        await storeData(COUNTRY_SETTING, newSettingList)
     }
 
     useEffect(() => {
-        async function getLocalList() {
-            const resposne = await getData('US')
-            const globalListSetting = convertToArray(resposne)
+        async function createSetting() {
+            const listType = name === COUNTRY ? COUNTRY : STATE
+            let countrySetting: { [key: string]: boolean } = {}
+            const resposne = await getData(listType)
+            console.log('waht is response', resposne)
+            for (const [key, value] of Object.entries(resposne)) {
+                countrySetting[key] = true
+            }
 
-            //append isEnable: boolean into arrary w/ type object
-            const newCountrySetting = globalListSetting.map(ele => {
-                return { ...ele, isEnabled: true }
-            })
+            //covert obj to array
+            const newList = convertToArray(countrySetting)
+            setSettingList(newList)
 
-            setSettingList(newCountrySetting)
+            const settingObj = { COUNTRY: countrySetting }
+            storeData(SETTING, settingObj)
         }
 
-        async function getCountrySetting() {
-            const response = await getData('COUNTRY_SETTING')
-            setSettingList(response)
-        }
-
-        async function fetchStateData() {
-            const response = await getData('state')
-            const stateListSetting = convertToArray(response)
-
-            const newStateListSetting = stateListSetting.map(ele => {
-                return { ...ele, isEnabled: true }
-            })
-
-            setSettingList(newStateListSetting)
-        }
-
-
-        getLocalList()
-        if (name === COUNTRY) {
-            getCountrySetting()
-            fetchStateData()
-        }
+        createSetting()
+        //fetchSetting()
     }, [])
+
+    useEffect(() => {
+        console.log('what is setting List', settingList)
+    }, [settingList])
 
     const renderItem = (props) => {
         const { index, item } = props
         const { title } = item
         const TABLE = name === COUNTRY ? US_HEATH_TABLE : STATE_HEALTH_TABLE
-        if (TABLE[title] === undefined || TABLE[title] === DEPRECATED) return <></>
+        if (TABLE[title] === 'depreciated') return <></>
         return (
             <MySwitch
-                key={item.key}
                 index={index}
-                {...item}
+                key={item.key}
+                DATA_TABLE={TABLE}
                 settingList={settingList}
                 setSettingList={setSettingList}
-                DATA_TABLE={TABLE}
+                {...item}
             />
         )
     }
+    useEffect(() => {
+        console.log('what is setting state', settingList)
+    }, [setSettingList])
+    if (!settingList) return <Text>Loading...</Text>
     return (
         <View style={styles.root}>
             {true && <FlatList
