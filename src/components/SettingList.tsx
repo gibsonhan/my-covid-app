@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
+import Toast from 'react-native-toast-message'
+
 //component
 import Bttn from '../components/common/Bttn'
 import MySwitch from '../components/common/MySwitch'
@@ -13,40 +15,87 @@ import STATE_HEALTH_TABLE from '../reserve/health/state.js'
 
 function SettingList({ route }: any) {
     const { name } = route
-    const [settingList, setSettingList] = useState()
+    const [reset, setReset] = useState(false)
+    const [settingList, setSettingList] = useState([])
+    const settingType = name === COUNTRY ? COUNTRY : STATE
+
+    async function checkForLocalSetting() {
+        try {
+            const response = await getData(SETTING)
+            if (response.error) throw response
+            const localSetting = response[settingType]
+            const newSetting = convertToArray(localSetting)
+            console.log('check', newSetting)
+            setSettingList(newSetting)
+        } catch (error) {
+            console.log(error.message)
+            return false
+        }
+        return true
+    }
+    async function createNewSetting() {
+        console.log('am i firring')
+        let setting: { [key: string]: boolean } = {}
+        const resposne = await getData(settingType)
+
+        for (const [key, value] of Object.entries(resposne)) {
+            setting[key] = true
+        }
+
+        //covert obj to array because renderItem takes []
+        const newList = convertToArray(setting)
+        setSettingList(newList)
+
+        const settingObj = { [settingType]: setting }
+        storeData(SETTING, settingObj)
+    }
 
     const handleSaveSetting = async () => {
+        if (settingList.length === 0) return
+        //extact setting values from settingList and save
+        console.log('what is settingList', settingList)
+        const saveSetting = settingList.reduce((acc, curr) => {
+            const { title, value } = curr
+            acc[title] = value
+            return acc
+        }, {})
 
+        try {
+            const newSetting = { [settingType]: saveSetting }
+            await storeData(SETTING, newSetting)
+        }
+        catch (error) {
+            Toast.show({
+                type: 'error',
+                position: 'top',
+                text1: 'Failed to save',
+                text2: 'Please try again  👋 ',
+                visibilityTime: 3000,
+                topOffset: 100
+            });
+        }
     }
 
     const handleResetSettings = async () => {
+        setReset(true)
+        createNewSetting()
+
+        //toogle reset after the function end
+        setTimeout(() => {
+            setReset(false)
+        }, 0)
     }
 
+    //setting configuration
     useEffect(() => {
-        async function createSetting() {
-            const listType = name === COUNTRY ? COUNTRY : STATE
-            let countrySetting: { [key: string]: boolean } = {}
-            const resposne = await getData(listType)
-            console.log('waht is response', resposne)
-            for (const [key, value] of Object.entries(resposne)) {
-                countrySetting[key] = true
+        async function fetchSetting() {
+            const haslocalSetting = await checkForLocalSetting()
+            if (!haslocalSetting) {
+                createNewSetting()
             }
-
-            //covert obj to array
-            const newList = convertToArray(countrySetting)
-            setSettingList(newList)
-
-            const settingObj = { COUNTRY: countrySetting }
-            storeData(SETTING, settingObj)
         }
-
-        createSetting()
-        //fetchSetting()
+        fetchSetting()
     }, [])
-
-    useEffect(() => {
-        console.log('what is setting List', settingList)
-    }, [settingList])
 
     const renderItem = (props) => {
         const { index, item } = props
@@ -58,15 +107,14 @@ function SettingList({ route }: any) {
                 index={index}
                 key={item.key}
                 DATA_TABLE={TABLE}
+                reset={reset}
                 settingList={settingList}
                 setSettingList={setSettingList}
                 {...item}
             />
         )
     }
-    useEffect(() => {
-        console.log('what is setting state', settingList)
-    }, [setSettingList])
+
     if (!settingList) return <Text>Loading...</Text>
     return (
         <View style={styles.root}>
@@ -95,4 +143,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SettingList
+export default React.memo(SettingList)

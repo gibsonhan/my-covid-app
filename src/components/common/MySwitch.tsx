@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Switch, Text, View } from 'react-native'
+import { Button, StyleSheet, Switch, Text, View } from 'react-native'
 
 export interface MySwitchInterface {
     index: number,
@@ -11,27 +11,25 @@ export interface MySwitchInterface {
 }
 
 function MySwitch(props: MySwitchInterface) {
-    const { index, title, value, settingList, setSettingList, DATA_TABLE } = props
-    const [toggleSwitch, setToggleSwitch] = useState(value)
+    const { index, title, value, reset, settingList, setSettingList, DATA_TABLE } = props
+    const [isEnabled, setIsEnabled] = useState(false)
     const handleToggleSwitch = () => {
+        setIsEnabled(prop => !prop)
         const newObject = {
             ...settingList[index],
-            value: !toggleSwitch
+            value: isEnabled
         }
-
         const newList = settingList.map((ele, i) => {
             return i === index
                 ? newObject
                 : ele
         })
-        console.log('what is newList', newList)
         setSettingList(newList)
     }
 
     useEffect(() => {
-        const state = settingList[index].value
-        setToggleSwitch(state)
-    }, [settingList])
+        if (reset) setIsEnabled(false)
+    }, [reset])
 
     return <View style={styles.root}>
         <Text>{DATA_TABLE[title]}</Text>
@@ -40,7 +38,7 @@ function MySwitch(props: MySwitchInterface) {
             thumbColor={value ? "yellow" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={handleToggleSwitch}
-            value={toggleSwitch} />}
+            value={isEnabled} />}
     </View>
 }
 
@@ -53,4 +51,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default MySwitch
+export default React.memo(MySwitch)

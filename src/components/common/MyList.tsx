@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default MyList
+export default React.memo(MyList)
