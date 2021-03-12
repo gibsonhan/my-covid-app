@@ -52,7 +52,7 @@ function SignIn() {
         if (user) {
             const currIdToken = await firebase.auth().currentUser?.getIdToken()
             await SIGN_IN(currIdToken)
-            navigation.navigate('Dashboard')
+            navigation.navigate('COVID')
         }
     }
 

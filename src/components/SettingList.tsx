@@ -19,41 +19,28 @@ function SettingList({ route }: any) {
     const [settingList, setSettingList] = useState([])
     const settingType = name === COUNTRY ? COUNTRY : STATE
 
-    async function checkForLocalSetting() {
-        try {
-            const response = await getData(SETTING)
-            if (response.error) throw response
-            const localSetting = response[settingType]
-            const newSetting = convertToArray(localSetting)
-            console.log('check', newSetting)
-            setSettingList(newSetting)
-        } catch (error) {
-            console.log(error.message)
-            return false
-        }
-        return true
-    }
     async function createNewSetting() {
-        console.log('am i firring')
-        let setting: { [key: string]: boolean } = {}
+        //TODO MIGRATE SAVING DATA TO the store layer
+        let setting: { [key: string]: string } = {}
         const resposne = await getData(settingType)
-
         for (const [key, value] of Object.entries(resposne)) {
-            setting[key] = true
+            setting[key] = 'true'
         }
 
         //covert obj to array because renderItem takes []
         const newList = convertToArray(setting)
+        console.log('what is newList', newList)
         setSettingList(newList)
 
-        const settingObj = { [settingType]: setting }
-        storeData(SETTING, settingObj)
+        const currSetting = { [settingType]: setting }
+        const localSetting = await getData(SETTING)
+        const finalSetting = !localSetting.error
+            ? { ...localSetting, ...currSetting }
+            : currSetting
+        storeData(SETTING, finalSetting)
     }
 
     const handleSaveSetting = async () => {
-        if (settingList.length === 0) return
-        //extact setting values from settingList and save
-        console.log('what is settingList', settingList)
         const saveSetting = settingList.reduce((acc, curr) => {
             const { title, value } = curr
             acc[title] = value
@@ -88,9 +75,19 @@ function SettingList({ route }: any) {
 
     //setting configuration
     useEffect(() => {
+        //TODO THERE IS A warning for the future. SignIn directs to MAP screen. 
+        //Setting have a data dependency w/ map screen. If the map screen isnt loaded then setting will ahve issue createing new settings
         async function fetchSetting() {
-            const haslocalSetting = await checkForLocalSetting()
-            if (!haslocalSetting) {
+            try {
+                //check if there exist local version save
+                const response = await getData(SETTING)
+                if (!response.error) throw response
+                const localSetting = response[settingType]
+                const newSetting = convertToArray(localSetting)
+                setSettingList(newSetting)
+            } catch (error) {
+                //if not create a new copy
+                console.log(error.message)
                 createNewSetting()
             }
         }
@@ -99,18 +96,20 @@ function SettingList({ route }: any) {
 
     const renderItem = (props) => {
         const { index, item } = props
-        const { title } = item
+        const { title, value } = item
+        const convertValue = value === 'true' ? true : false
         const TABLE = name === COUNTRY ? US_HEATH_TABLE : STATE_HEALTH_TABLE
         if (TABLE[title] === 'depreciated') return <></>
         return (
             <MySwitch
                 index={index}
                 key={item.key}
-                DATA_TABLE={TABLE}
+                title={title}
                 reset={reset}
+                value={convertValue}
+                DATA_TABLE={TABLE}
                 settingList={settingList}
                 setSettingList={setSettingList}
-                {...item}
             />
         )
     }
@@ -118,7 +117,8 @@ function SettingList({ route }: any) {
     if (!settingList) return <Text>Loading...</Text>
     return (
         <View style={styles.root}>
-            {true && <FlatList
+            {console.log('what is setting list', settingList)}
+            {<FlatList
                 data={settingList}
                 renderItem={renderItem}
                 keyExtractor={item => item.key}
