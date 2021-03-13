@@ -22,10 +22,11 @@ export default function App() {
   function BottomNav() {
     const store = useContext(Context)
     const hasToken = store.state.idToken.length > 0
+    const initRoute = hasToken ? 'Home' : 'Login'
     //const hasToken = idToken.length > 0
     return (
       <BottomTab.Navigator
-        initialRouteName="Login"
+        initialRouteName={initRoute}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             return iconSelector({

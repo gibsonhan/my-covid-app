@@ -3,8 +3,8 @@ import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
 
 import MyList from '../common/MyList'
 import { getData } from '../../store/localDataHelper';
-import { convertToArray } from "../../util/objToArray";
 import { COUNTRY, DEFAULT, STATE } from '../../reserve/data/data'
+import fetchCovidData from "../../util/fetchCovidData";
 
 function Home() {
   const [list, setList] = useState([])
@@ -15,16 +15,15 @@ function Home() {
       let data = {}
       //IF there is no default, set coutry as deefault data
       try {
-        data = await getData(DEFAULT)
-        if (data.error) throw data
-
+        let query = await getData(DEFAULT)
+        if (query.error) throw query
+        data = await fetchCovidData(query)
         setListType(STATE)
       }
       catch (error) {
         data = await getData(COUNTRY)
         setListType(COUNTRY)
       }
-
       setList(data)
     }
     fetchData()

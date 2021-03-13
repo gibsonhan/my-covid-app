@@ -13,13 +13,13 @@ import { getData, storeData } from '../../store/localDataHelper'
 import { COUNTRY } from '../../reserve/data/data'
 import { DATE_CHECKED } from '../../reserve/health/unitedState'
 import Toast from "react-native-toast-message";
-import { convertToArray } from "../../util/objToArray";
 
 function FirstTime() {
   const [list, setList] = useState({});
   const [listType, setListType] = useState('')
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
   const [search, setSearchInput] = useState('');
+  const [searching, setSearching] = useState(false)
 
   //Load INIT COVID DATA OF ENTIRE US
   useEffect(() => {
@@ -52,6 +52,7 @@ function FirstTime() {
   }, [])
 
   const handleFetchData = async () => {
+    setSearching(true)
     try {
       const response = await fetchCovidData(search);
       if (response.error) throw response;
@@ -71,6 +72,10 @@ function FirstTime() {
       console.log('err', err)
       setGeoPosition(initGeoPos)
     }
+
+    setTimeout(() => {
+      setSearching(false)
+    }, 0)
   };
 
   const setText = (text: string) => {
@@ -82,7 +87,7 @@ function FirstTime() {
       <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />
       <Map {...geoPosition} />
       <SearchInput {...{ handleFetchData, setText, value: search }} />
-      <InfoTab {...{ list, listType }} />
+      <InfoTab {...{ list, listType, geoPosition, searching }} />
     </View >
   );
 };

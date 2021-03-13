@@ -1,24 +1,29 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Animated, Dimensions, FlatList, ListRenderItemInfo, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { Animated, Dimensions, SafeAreaView, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 //components
 import Bttn from '../components/common/Bttn'
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import MyList from './common/MyList';
 
 //helper util
-import { convertToArray } from '../util/objToArray';
-import { storeData } from '../store/localDataHelper'
 import { DEFAULT } from '../reserve/data/data'
+import initGeoPos from '../reserve/map/initGeoPos'
+import { storeData } from '../store/localDataHelper'
 
 export interface InfoTabInterface {
-    list?: {},
-    listType: ''
+    list?: {} | undefined,
+    listType: '',
+    geoPosition: {},
+    searching: boolean
 }
 
-function InfoTab(props: InfoTabInterface) {
-    const { list, listType } = props
-    const [fullScreen, setFullScreen] = useState(false)
 
+function InfoTab(props: InfoTabInterface) {
+    const { list, listType, geoPosition, searching } = props
+    const [fullScreen, setFullScreen] = useState(false)
+    const navigation = useNavigation()
+    const isInitGeoPos = compareObject(geoPosition, initGeoPos)
     //Current Bottom Nav is 48px + 12px Padding Top = 60. 
     //Not sure why we need an 80px offset to get get above the bottom nav, 
     const startTop = Dimensions.get('window').height - (80 + 40);
@@ -26,6 +31,10 @@ function InfoTab(props: InfoTabInterface) {
     const topAnim = useRef(new Animated.Value(startTop)).current;
 
     //animation, moves info Tab down
+    function compareObject(pos1: {}, pos2: {}) {
+        return JSON.stringify(pos1) === JSON.stringify(pos2)
+    }
+
     const handleMoveDown = () => {
         // Will change fadeAnim value to 0 in 5 seconds
         setFullScreen(false)
@@ -50,8 +59,21 @@ function InfoTab(props: InfoTabInterface) {
 
     //Save data to default local
     const handleSaveDefault = async () => {
-
+        try {
+            const state = list.state.toLowerCase()
+            await storeData(DEFAULT, state)
+        }
+        catch (error) {
+            console.log(error)
+        }
+        navigation.navigate('Home')
     }
+
+    useEffect(() => {
+        if (searching === true) {
+            handleMoveDown()
+        }
+    }, [searching])
 
     return (
         <Animated.View style={[styles.infoTab, { top: topAnim }]}>
@@ -64,7 +86,7 @@ function InfoTab(props: InfoTabInterface) {
                     onPress={handleMoveUp}
                 />
             }
-            {fullScreen &&
+            {!isInitGeoPos &&
                 <Bttn
                     title="save default"
                     style={{ marginTop: 10, marginBottom: 10 }}
