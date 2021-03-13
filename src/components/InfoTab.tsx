@@ -7,7 +7,7 @@ import EntypoIcon from "react-native-vector-icons/Entypo";
 import MyList from './common/MyList';
 
 //helper util
-import { DEFAULT } from '../reserve/data/data'
+import { DEFAULT, STATE } from '../reserve/data/data'
 import initGeoPos from '../reserve/map/initGeoPos'
 import { storeData } from '../store/localDataHelper'
 
@@ -61,12 +61,15 @@ function InfoTab(props: InfoTabInterface) {
     const handleSaveDefault = async () => {
         try {
             const state = list.state.toLowerCase()
+            await storeData(STATE, list)
             await storeData(DEFAULT, state)
         }
         catch (error) {
             console.log(error)
         }
-        navigation.navigate('Home')
+        setTimeout(() => {
+            navigation.navigate('Home')
+        }, 1000)
     }
 
     useEffect(() => {

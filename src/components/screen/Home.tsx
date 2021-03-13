@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
 
 import MyList from '../common/MyList'
-import { getData } from '../../store/localDataHelper';
+import { getData, storeData } from '../../store/localDataHelper';
 import { COUNTRY, DEFAULT, STATE } from '../../reserve/data/data'
 import fetchCovidData from "../../util/fetchCovidData";
 

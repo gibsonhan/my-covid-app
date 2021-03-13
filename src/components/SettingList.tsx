@@ -9,7 +9,7 @@ import MySwitch from '../components/common/MySwitch'
 import { convertToArray } from '../util/objToArray'
 import { getData, storeData } from '../store/localDataHelper'
 //Data
-import { COUNTRY, SETTING, STATE, ZIP } from '../reserve/data/data'
+import { COUNTRY, DEFAULT, SETTING, STATE, ZIP } from '../reserve/data/data'
 import US_HEATH_TABLE from '../reserve/health/unitedState'
 import STATE_HEALTH_TABLE from '../reserve/health/state.js'
 
@@ -22,6 +22,7 @@ function SettingList({ route }: any) {
     async function createNewSetting() {
         //TODO MIGRATE SAVING DATA TO the store layer
         let setting: { [key: string]: string } = {}
+
         const resposne = await getData(settingType)
         for (const [key, value] of Object.entries(resposne)) {
             setting[key] = 'true'
@@ -29,7 +30,6 @@ function SettingList({ route }: any) {
 
         //covert obj to array because renderItem takes []
         const newList = convertToArray(setting)
-        console.log('what is newList', newList)
         setSettingList(newList)
 
         const currSetting = { [settingType]: setting }
@@ -48,8 +48,10 @@ function SettingList({ route }: any) {
         }, {})
 
         try {
+            const setting = await getData(SETTING)
             const newSetting = { [settingType]: saveSetting }
-            await storeData(SETTING, newSetting)
+            const combineSetting = { ...setting, ...newSetting }
+            await storeData(SETTING, combineSetting)
         }
         catch (error) {
             Toast.show({
@@ -81,7 +83,7 @@ function SettingList({ route }: any) {
             try {
                 //check if there exist local version save
                 const response = await getData(SETTING)
-                if (!response.error) throw response
+                if (response.error) throw { message: 'no local setting found' }
                 const localSetting = response[settingType]
                 const newSetting = convertToArray(localSetting)
                 setSettingList(newSetting)
@@ -117,7 +119,6 @@ function SettingList({ route }: any) {
     if (!settingList) return <Text>Loading...</Text>
     return (
         <View style={styles.root}>
-            {console.log('what is setting list', settingList)}
             {<FlatList
                 data={settingList}
                 renderItem={renderItem}

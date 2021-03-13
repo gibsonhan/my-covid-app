@@ -32,7 +32,6 @@ function FirstTime() {
     async function checkLocalData() {
       try {
         const localData = await getData(COUNTRY)
-        console.log('what is localData', typeof localData)
         if (localData.error) throw localData
 
         const localDataDate = localData[DATE_CHECKED].slice(0, 10)
