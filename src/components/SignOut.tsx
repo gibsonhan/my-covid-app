@@ -1,37 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import firebase from '../util/firebaseHelper'
+
+import { Context } from '../store/AppContext'
 import Toast from 'react-native-toast-message'
-import { COVID } from '../reserve/data/screenName'
+import { SIGNIN } from '../reserve/data/screenName'
 
 function SignOut() {
-    const naviation = useNavigation()
+    const store = useContext(Context)
+    const { SIGN_OUT } = store.DISPATCH
+    const navigation = useNavigation()
     const handleSignOut = async () => {
         try {
-            let response = await firebase.auth().signOut()
-            console.log('signing out', response)
-            naviation.navigate(COVID)
+            await firebase.auth().signOut()
+            await SIGN_OUT()
             setTimeout(() => {
-                Toast.show({
-                    type: 'true',
-                    position: 'top',
-                    text1: 'See you later',
-                    text2: 'Let me know if you have any question  👋 ',
-                    visibilityTime: 3000,
-                    topOffset: 100
-                });
-            }, 1000)
+                navigation.navigate(SIGNIN)
+            }, 100)
         }
         catch (error) {
-            Toast.show({
-                type: 'error',
-                position: 'top',
-                text1: error.message,
-                text2: 'Please try again  👋 ',
-                visibilityTime: 3000,
-                topOffset: 100
-            });
+            console.log('what is the error', error)
         }
     }
     return (

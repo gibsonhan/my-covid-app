@@ -15,11 +15,9 @@ import STATE_HEALTH_TABLE from '../reserve/health/state.js'
 
 function SettingList({ route }: any) {
     const { name } = route
-    console.log('what is name', name)
     const [reset, setReset] = useState(false)
     const [settingList, setSettingList] = useState([])
     const settingType = name === COUNTRY ? COUNTRY : STATE
-    console.log('setting type', settingType)
 
     async function createNewSetting() {
         //TODO MIGRATE SAVING DATA TO the store layer
