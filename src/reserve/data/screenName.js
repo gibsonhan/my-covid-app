@@ -1,0 +1,8 @@
+export const COVID = 'covid'
+export const DASHBOARD = 'dashboard'
+export const FEEDBACK = 'feedback'
+export const HOME = 'home'
+export const MAIN = 'main'
+export const MODAL = 'modal'
+export const SIGNIN = 'sign in'
+export const SIGNOUT = 'sign out'

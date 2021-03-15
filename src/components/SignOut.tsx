@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
-import firebase from '../util/firebaseHelper'
+import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
-import Toast from 'react-native-toast-message'
 import { useNavigation } from '@react-navigation/native'
+import firebase from '../util/firebaseHelper'
+import Toast from 'react-native-toast-message'
+import { COVID } from '../reserve/data/screenName'
 
 function SignOut() {
     const naviation = useNavigation()
@@ -10,7 +11,7 @@ function SignOut() {
         try {
             let response = await firebase.auth().signOut()
             console.log('signing out', response)
-            naviation.navigate('COVID')
+            naviation.navigate(COVID)
             setTimeout(() => {
                 Toast.show({
                     type: 'true',

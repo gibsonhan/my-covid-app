@@ -3,12 +3,13 @@ import { StyleSheet, Text, View } from "react-native";
 
 import Toast from 'react-native-toast-message'
 import SignIn from '../SignIn.native'
+import { MODAL } from '../../reserve/data/screenName'
 //TODO fix that naviation erro
 interface AccountInterface {
     navigation: any
 }
 function Account({ navigation }: AccountInterface) {
-    const handleRegNavigation = () => navigation.navigate('Modal')
+    const handleRegNavigation = () => navigation.navigate(MODAL)
     return (
         <View style={styles.root}>
             <Toast style={styles.toast} ref={(ref) => Toast.setRef(ref)} />

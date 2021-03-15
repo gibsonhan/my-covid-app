@@ -107,7 +107,7 @@ export default StateTitle = {
     [PROBABLE_CASES]: 'Probable cases of COVID19',
     [RECOVERED]: 'Total recovered from COVID19',
     [SCORE]: DEPRECIATED,
-    [STATE]: 'state',
+    [STATE]: 'Name of State',
     [TOTAL]: DEPRECIATED,
     [TOTAL_TEST_ENCOUNTER_VIRAL]: 'Total PCR tested per day',
     [TOTAL_TEST_RESULT]: 'Total estiamte PCR testing',

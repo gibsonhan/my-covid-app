@@ -8,10 +8,11 @@ import MyList from './common/MyList';
 
 //helper util
 import { DEFAULT, STATE } from '../reserve/data/data'
+import { HOME } from '../reserve/data/screenName'
 import initGeoPos from '../reserve/map/initGeoPos'
 import { storeData } from '../store/localDataHelper'
 
-export interface InfoTabInterface {
+export interface InfoTabInTerface {
     list?: {} | undefined,
     listType: '',
     geoPosition: {},
@@ -68,7 +69,7 @@ function InfoTab(props: InfoTabInterface) {
             console.log(error)
         }
         setTimeout(() => {
-            navigation.navigate('Home')
+            navigation.navigate(HOME)
         }, 1000)
     }
 

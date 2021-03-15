@@ -14,6 +14,7 @@ import Home from "./src/components/screen/Home";
 import RegisterModal from './src/components/modal/RegisterModal.native';
 //functions
 import { iconSelector } from './src/util/iconSelector'
+import { COVID, DASHBOARD, HOME, FEEDBACK, MAIN, MODAL, SIGNIN } from "./src/reserve/data/screenName";
 
 const RootStack = createStackNavigator()
 const BottomTab = createBottomTabNavigator();
@@ -22,7 +23,7 @@ export default function App() {
   function BottomNav() {
     const store = useContext(Context)
     const hasToken = store.state.idToken.length > 0
-    const initRoute = hasToken ? 'Home' : 'Login'
+    const initRoute = hasToken ? HOME : SIGNIN
     //const hasToken = idToken.length > 0
     return (
       <BottomTab.Navigator
@@ -46,11 +47,11 @@ export default function App() {
           },
         }}
       >
-        <BottomTab.Screen name="COVID" component={FirstTime} />
-        <BottomTab.Screen name="Home" component={Home} />
-        {!hasToken && <BottomTab.Screen name="Login" component={Account} />}
-        {hasToken && <BottomTab.Screen name="Dashboard" component={Dashboard} />}
-        <BottomTab.Screen name="Feedback" component={Feedback} />
+        <BottomTab.Screen name={COVID} component={FirstTime} />
+        <BottomTab.Screen name={HOME} component={Home} />
+        {!hasToken && <BottomTab.Screen name={SIGNIN} component={Account} />}
+        {hasToken && <BottomTab.Screen name={DASHBOARD} component={Dashboard} />}
+        <BottomTab.Screen name={FEEDBACK} component={Feedback} />
       </BottomTab.Navigator>
     )
   }
@@ -58,8 +59,8 @@ export default function App() {
     <AppContext>
       <NavigationContainer>
         <RootStack.Navigator mode="modal" headerMode="none">
-          <RootStack.Screen name="Main" component={BottomNav} />
-          <RootStack.Screen name="Modal" component={RegisterModal} />
+          <RootStack.Screen name={MAIN} component={BottomNav} />
+          <RootStack.Screen name={MODAL} component={RegisterModal} />
         </RootStack.Navigator>
       </NavigationContainer>
     </AppContext>

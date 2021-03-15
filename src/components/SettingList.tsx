@@ -9,15 +9,17 @@ import MySwitch from '../components/common/MySwitch'
 import { convertToArray } from '../util/objToArray'
 import { getData, storeData } from '../store/localDataHelper'
 //Data
-import { COUNTRY, DEFAULT, SETTING, STATE, ZIP } from '../reserve/data/data'
+import { COUNTRY, SETTING, STATE } from '../reserve/data/data'
 import US_HEATH_TABLE from '../reserve/health/unitedState'
 import STATE_HEALTH_TABLE from '../reserve/health/state.js'
 
 function SettingList({ route }: any) {
     const { name } = route
+    console.log('what is name', name)
     const [reset, setReset] = useState(false)
     const [settingList, setSettingList] = useState([])
     const settingType = name === COUNTRY ? COUNTRY : STATE
+    console.log('setting type', settingType)
 
     async function createNewSetting() {
         //TODO MIGRATE SAVING DATA TO the store layer
@@ -144,4 +146,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default React.memo(SettingList)
+export default SettingList

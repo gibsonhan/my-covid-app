@@ -10,6 +10,7 @@ import Input from './common/Input'
 import { Context } from '../store/AppContext'
 import firebase from '../util/firebaseHelper'
 import { signInWithEmailAndPassword } from '../util/accountHelper'
+import { COVID } from '../reserve/data/screenName'
 
 function SignIn() {
     //context
@@ -52,7 +53,7 @@ function SignIn() {
         if (user) {
             const currIdToken = await firebase.auth().currentUser?.getIdToken()
             await SIGN_IN(currIdToken)
-            navigation.navigate('COVID')
+            navigation.navigate(COVID)
         }
     }
 
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
     root: {
         backgroundColor: 'red'
     },
-
 })
 
 export default SignIn;

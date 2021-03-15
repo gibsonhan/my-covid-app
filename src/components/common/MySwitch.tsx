@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default React.memo(MySwitch)
+export default MySwitch
