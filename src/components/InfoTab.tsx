@@ -11,7 +11,7 @@ import { Context } from '../store/AppContext'
 import { DEFAULT, STATE } from '../reserve/data/data'
 import { HOME } from '../reserve/data/screenName'
 import initGeoPos from '../reserve/map/initGeoPos'
-import { storeData } from '../store/localDataHelper'
+import { getData, storeData } from '../store/localDataHelper'
 
 export interface InfoTabInTerface {
     list?: {} | undefined,
@@ -64,10 +64,9 @@ function InfoTab(props: InfoTabInterface) {
         try {
             const state = list.state.toLowerCase()
             //save to app context
-            await SAVE_DEFAULT(state)
+            await SAVE_DEFAULT(list)
             //save to local
-            await storeData(DEFAULT, state)
-            await storeData(STATE, list)
+            await storeData(DEFAULT, list)
         }
         catch (error) {
             console.log(error)

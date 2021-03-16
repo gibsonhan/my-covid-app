@@ -5,11 +5,12 @@ import { getData, storeData } from './localDataHelper'
 //reserved words
 import { COUNTRY, DEFAULT, STATE } from '../reserve/data/data'
 import { SAVEDEFAULT, SAVECOUNTRY, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
-import { fetchCovidByCountry } from '../util/fetchCovidData'
+import fetchCovidData, { fetchCovidByCountry } from '../util/fetchCovidData'
 const initData = {
     idToken: '',
-    default: '', //should not name a variable to default
-    country: '',
+    default: {}, //should not name a variable to default
+    country: {},
+    state: {},
     setting: {
         country: {},
         state: {}
@@ -20,6 +21,7 @@ function reducer(state: object, payload: object) {
     const { type, data }: { type: string, data: string } = payload
     switch (type) {
         case SAVEDEFAULT:
+            console.log('reducer', data)
             return {
                 ...state,
                 default: data
@@ -50,10 +52,10 @@ const AppContext: React.FC<{}> = ({ children }) => {
             data: data
         })
     }
-    const SAVE_DEFAULT = async (state: string) => {
+    const SAVE_DEFAULT = async (data: object) => {
         await dispatch({
             type: SAVEDEFAULT,
-            data: state
+            data: data
         })
     }
     const SIGN_IN = async (idToken: string) => {
@@ -84,9 +86,8 @@ const AppContext: React.FC<{}> = ({ children }) => {
     //set global contry data
     useEffect(() => {
         async function getGlobalData() {
-            let data = ''
+            let data = await getData(COUNTRY)
             //check local data
-            data = await getData(COUNTRY)
             if (data.error) {
                 data = await fetchCovidByCountry()
                 await storeData(COUNTRY, data)
@@ -95,7 +96,15 @@ const AppContext: React.FC<{}> = ({ children }) => {
             //Update Context API
             await SAVE_COUNTRY(data)
         }
+
+        async function getDefaultData() {
+            let data = await getData(DEFAULT)
+            if (!data.error) {
+                await SAVE_DEFAULT(data)
+            }
+        }
         getGlobalData()
+        getDefaultData()
     }, [])
 
     return <Context.Provider value={{ state, DISPATCH }}>{children}</Context.Provider>

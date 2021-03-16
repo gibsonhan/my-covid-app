@@ -8,6 +8,7 @@ import { Context } from "../../store/AppContext";
 import { getData } from '../../store/localDataHelper';
 import { COUNTRY, DEFAULT, STATE } from '../../reserve/data/data'
 import fetchCovidData from "../../util/fetchCovidData";
+import isObjectEmpty from "../../util/isObjectEmpty";
 
 function Home() {
   const { state } = useContext(Context)
@@ -17,28 +18,16 @@ function Home() {
 
   useEffect(() => {
     async function fetchData() {
+      let isEmpty = isObjectEmpty(state.default)
+      let listType = COUNTRY
       let data = {}
-      let param = ''
-      let listType = STATE
-      //Check Context API if it has data
-      if (state.default.length > 0) {
-        param = state.default
-        data = await fetchCovidData(param)
+      //if default context is not empty  set list type 
+      if (!isEmpty) {
+        data = state.default
+        listType = STATE
       }
       else {
-        //Check local data
-        try {
-          param = await getData(DEFAULT)
-          if (param.error) throw param
-          data = await fetchCovidData(param)
-        }
-        catch (error) {
-          //if local storage does not have param
-          //set list to COUNTRY which is fetch daily on launch
-          console.log('No default param in context api or local storage')
-          data = await getData(COUNTRY)
-          listType = COUNTRY
-        }
+        data = state[COUNTRY]
       }
       setList(data)
       setListType(listType)
