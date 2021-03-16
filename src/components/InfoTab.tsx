@@ -45,7 +45,6 @@ function InfoTab(props: InfoTabInterface) {
             toValue: startTop,
             duration: 300,
             useNativeDriver: false, //height animation is not supported by native driver
-
         }).start();
     };
 
@@ -72,9 +71,8 @@ function InfoTab(props: InfoTabInterface) {
         catch (error) {
             console.log(error)
         }
-        setTimeout(() => {
-            navigation.navigate(HOME)
-        }, 1000)
+
+        navigation.navigate(HOME)
     }
 
     useEffect(() => {

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
+import { useIsFocused } from '@react-navigation/native'
 //component
 import MyList from '../common/MyList'
 //helper
@@ -10,6 +11,7 @@ import fetchCovidData from "../../util/fetchCovidData";
 
 function Home() {
   const { state } = useContext(Context)
+  const isFocused = useIsFocused()
   const [list, setList] = useState([])
   const [listType, setListType] = useState('')
 
@@ -35,6 +37,7 @@ function Home() {
           //set list to COUNTRY which is fetch daily on launch
           console.log('No default param in context api or local storage')
           data = await getData(COUNTRY)
+          console.log('what is data', data)
           listType = COUNTRY
         }
       }
@@ -42,7 +45,7 @@ function Home() {
       setListType(listType)
     }
     fetchData()
-  }, [])
+  }, [isFocused])
 
   return (
     <View style={styles.root}>

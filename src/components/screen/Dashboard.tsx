@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { SafeAreaView } from "react-native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useIsFocused } from '@react-navigation/native'
+
 //component
 import SettingList from '../SettingList'
 import SignOut from '../SignOut'
@@ -12,6 +14,7 @@ import { SIGNOUT } from '../../reserve/data/screenName'
 
 function Dashboard() {
     const { state } = useContext(Context)
+    const isFocused = useIsFocused()
     const TopTab = createMaterialTopTabNavigator();
     const [hasDefault, setHasDefault] = useState(false)
 
@@ -21,14 +24,20 @@ function Dashboard() {
         async function checkDefault() {
             //check context api for default first
             if (state.default.length > 0) {
-                //check local storage
+                setHasDefault(true)
+            }
+            else {
                 let response = await getData(DEFAULT)
                 if (!response.error) setHasDefault(true)
             }
         }
         checkDefault()
-    }, [])
+    }, [isFocused])
 
+    useEffect(() => {
+        console.log('what is has default', hasDefault)
+        console.log('what is state', state)
+    }, [hasDefault])
     //no default home screen and not signed in
     if (hasDefault) {
         return (
