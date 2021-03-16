@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { SAVEDEFAULT, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
 const initData = {
     idToken: '',
-    default: '',
+    default: '', //should not name a variable to default
     setting: {
         country: {},
         state: {}
