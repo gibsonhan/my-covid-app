@@ -1,8 +1,15 @@
 import React, { useEffect } from 'react'
-import { SAVEDEFAULT, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
+import { formatISO } from 'date-fns'
+//helper
+import { getData, storeData } from './localDataHelper'
+//reserved words
+import { COUNTRY, DEFAULT, STATE } from '../reserve/data/data'
+import { SAVEDEFAULT, SAVECOUNTRY, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
+import { fetchCovidByCountry } from '../util/fetchCovidData'
 const initData = {
     idToken: '',
     default: '', //should not name a variable to default
+    country: '',
     setting: {
         country: {},
         state: {}
@@ -16,6 +23,11 @@ function reducer(state: object, payload: object) {
             return {
                 ...state,
                 default: data
+            }
+        case SAVECOUNTRY:
+            return {
+                ...state,
+                country: data
             }
         case SIGNIN:
             return {
@@ -32,8 +44,13 @@ const Context = React.createContext(null)
 const AppContext: React.FC<{}> = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initData)
     //account handlers
+    const SAVE_COUNTRY = async (data: object) => {
+        await dispatch({
+            type: SAVECOUNTRY,
+            data: data
+        })
+    }
     const SAVE_DEFAULT = async (state: string) => {
-        console.log(state)
         await dispatch({
             type: SAVEDEFAULT,
             data: state
@@ -55,6 +72,7 @@ const AppContext: React.FC<{}> = ({ children }) => {
 
     const DISPATCH = {
         SAVE_DEFAULT,
+        SAVE_COUNTRY,
         SIGN_IN,
         SIGN_OUT
     }
@@ -62,6 +80,23 @@ const AppContext: React.FC<{}> = ({ children }) => {
     useEffect(() => {
         console.log('state', state)
     }, [state])
+
+    //set global contry data
+    useEffect(() => {
+        async function getGlobalData() {
+            let data = ''
+            //check local data
+            data = await getData(COUNTRY)
+            if (data.error) {
+                data = await fetchCovidByCountry()
+                await storeData(COUNTRY, data)
+            }
+
+            //Update Context API
+            await SAVE_COUNTRY(data)
+        }
+        getGlobalData()
+    }, [])
 
     return <Context.Provider value={{ state, DISPATCH }}>{children}</Context.Provider>
 }

@@ -63,6 +63,7 @@ function InfoTab(props: InfoTabInterface) {
     const handleSaveDefault = async () => {
         try {
             const state = list.state.toLowerCase()
+            //save to app context
             await SAVE_DEFAULT(state)
             //save to local
             await storeData(DEFAULT, state)
@@ -71,7 +72,6 @@ function InfoTab(props: InfoTabInterface) {
         catch (error) {
             console.log(error)
         }
-
         navigation.navigate(HOME)
     }
 

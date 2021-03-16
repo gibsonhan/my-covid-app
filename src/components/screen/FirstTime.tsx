@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { formatISO } from 'date-fns'
+import React, { useContext, useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { useIsFocused } from '@react-navigation/native'
 //components
 import InfoTab from '../InfoTab'
 import Map from '../Map'
 import SearchInput from '../../SearchInput'
 //helper util
+import { Context } from "../../store/AppContext";
 import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData'
-import initGeoPos from '../../reserve/map/initGeoPos'
-import { getData, storeData } from '../../store/localDataHelper'
+import { storeData } from '../../store/localDataHelper'
 //reserved words
-import { COUNTRY } from '../../reserve/data/data'
-import { DATE_CHECKED } from '../../reserve/health/unitedState'
+import { COUNTRY, STATE } from '../../reserve/data/data'
+import initGeoPos from '../../reserve/map/initGeoPos'
 import Toast from "react-native-toast-message";
+import isCountryDataFresh from "../../util/isCountryDataFresh";
 
 function FirstTime() {
+  const { state } = useContext(Context)
+  const isFocused = useIsFocused()
   const [list, setList] = useState({});
   const [listType, setListType] = useState('')
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
@@ -29,18 +32,13 @@ function FirstTime() {
       setListType(COUNTRY)
       storeData(COUNTRY, response)
     }
+
     async function checkLocalData() {
       try {
-        const localData = await getData(COUNTRY)
-        if (localData.error) throw localData
-
-        const localDataDate = localData[DATE_CHECKED].slice(0, 10)
-        const todayDate = formatISO(new Date()).slice(0, 10)
-        const localDataFresh = localDataDate === todayDate
-
-        if (localDataFresh) setList(localData)
+        const data = state[COUNTRY]
+        const isDataFresh = isCountryDataFresh(data)
+        if (isDataFresh) setList(data)
         else throw { message: 'data is not fresh' }
-
       } catch (error) {
         console.log('error', error.message)
         await fetchCountryCOVID()
@@ -48,10 +46,11 @@ function FirstTime() {
     }
 
     checkLocalData()
-  }, [])
+  }, [isFocused])
 
   const handleFetchData = async () => {
     setSearching(true)
+    setListType(STATE)
     try {
       const response = await fetchCovidData(search);
       if (response.error) throw response;

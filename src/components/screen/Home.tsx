@@ -37,7 +37,6 @@ function Home() {
           //set list to COUNTRY which is fetch daily on launch
           console.log('No default param in context api or local storage')
           data = await getData(COUNTRY)
-          console.log('what is data', data)
           listType = COUNTRY
         }
       }

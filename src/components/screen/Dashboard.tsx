@@ -34,12 +34,8 @@ function Dashboard() {
         checkDefault()
     }, [isFocused])
 
-    useEffect(() => {
-        console.log('what is has default', hasDefault)
-        console.log('what is state', state)
-    }, [hasDefault])
     //no default home screen and not signed in
-    if (hasDefault) {
+    if (!hasDefault) {
         return (
             <SafeAreaView style={{ backgroundColor: 'yellow', flex: 1 }}>
                 <TopTab.Navigator>

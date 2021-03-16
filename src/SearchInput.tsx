@@ -6,10 +6,11 @@ import Bttn from './components/common/Bttn'
 import CenterIcon from "./components/common/CenterIcon";
 
 export interface SearchInputInterface {
-	setText: (text: string) => void;
-	handleFetchData: () => void;
-	value?: string;
+	setText: (text: string) => void,
+	handleFetchData: () => void,
+	value?: string
 }
+
 function SearchInput(props: SearchInputInterface) {
 	const { handleFetchData, setText, value } = props;
 	return (
