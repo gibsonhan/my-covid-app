@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Animated, Dimensions, SafeAreaView, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 //components
@@ -7,6 +7,7 @@ import EntypoIcon from "react-native-vector-icons/Entypo";
 import MyList from './common/MyList';
 
 //helper util
+import { Context } from '../store/AppContext'
 import { DEFAULT, STATE } from '../reserve/data/data'
 import { HOME } from '../reserve/data/screenName'
 import initGeoPos from '../reserve/map/initGeoPos'
@@ -19,11 +20,12 @@ export interface InfoTabInTerface {
     searching: boolean
 }
 
-
 function InfoTab(props: InfoTabInterface) {
     const { list, listType, geoPosition, searching } = props
-    const [fullScreen, setFullScreen] = useState(false)
+    const { DISPATCH } = useContext(Context)
+    const { SAVE_DEFAULT } = DISPATCH
     const navigation = useNavigation()
+    const [fullScreen, setFullScreen] = useState(false)
     const isInitGeoPos = compareObject(geoPosition, initGeoPos)
     //Current Bottom Nav is 48px + 12px Padding Top = 60. 
     //Not sure why we need an 80px offset to get get above the bottom nav, 
@@ -62,8 +64,10 @@ function InfoTab(props: InfoTabInterface) {
     const handleSaveDefault = async () => {
         try {
             const state = list.state.toLowerCase()
-            await storeData(STATE, list)
+            await SAVE_DEFAULT(state)
+            //save to local
             await storeData(DEFAULT, state)
+            await storeData(STATE, list)
         }
         catch (error) {
             console.log(error)

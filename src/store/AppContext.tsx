@@ -12,6 +12,11 @@ const initData = {
 function reducer(state: object, payload: object) {
     const { type, data }: { type: string, data: string } = payload
     switch (type) {
+        case SAVEDEFAULT:
+            return {
+                ...state,
+                default: data
+            }
         case SIGNIN:
             return {
                 ...state,
@@ -28,6 +33,7 @@ const AppContext: React.FC<{}> = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initData)
     //account handlers
     const SAVE_DEFAULT = async (state: string) => {
+        console.log(state)
         await dispatch({
             type: SAVEDEFAULT,
             data: state
@@ -41,7 +47,6 @@ const AppContext: React.FC<{}> = ({ children }) => {
     }
 
     const SIGN_OUT = async () => {
-        console.log('lol are we signing out')
         await dispatch({
             type: SIGNOUT,
             data: 'None'

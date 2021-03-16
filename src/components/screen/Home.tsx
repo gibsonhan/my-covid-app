@@ -1,30 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
-
+//component
 import MyList from '../common/MyList'
-import { getData, storeData } from '../../store/localDataHelper';
+//helper
+import { Context } from "../../store/AppContext";
+import { getData } from '../../store/localDataHelper';
 import { COUNTRY, DEFAULT, STATE } from '../../reserve/data/data'
 import fetchCovidData from "../../util/fetchCovidData";
 
 function Home() {
+  const { state } = useContext(Context)
   const [list, setList] = useState([])
   const [listType, setListType] = useState('')
 
   useEffect(() => {
     async function fetchData() {
       let data = {}
-      //IF there is no default, set coutry as deefault data
-      try {
-        let query = await getData(DEFAULT)
-        if (query.error) throw query
-        data = await fetchCovidData(query)
-        setListType(STATE)
+      let param = ''
+      let listType = STATE
+      //Check Context API if it has data
+      if (state.default.length > 0) {
+        param = state.default
+        data = await fetchCovidData(param)
       }
-      catch (error) {
-        data = await getData(COUNTRY)
-        setListType(COUNTRY)
+      else {
+        //Check local data
+        try {
+          param = await getData(DEFAULT)
+          if (param.error) throw param
+          data = await fetchCovidData(param)
+        }
+        catch (error) {
+          //if local storage does not have param
+          //set list to COUNTRY which is fetch daily on launch
+          console.log('No default param in context api or local storage')
+          data = await getData(COUNTRY)
+          listType = COUNTRY
+        }
       }
       setList(data)
+      setListType(listType)
     }
     fetchData()
   }, [])
