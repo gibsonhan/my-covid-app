@@ -5,7 +5,8 @@ import { useIsFocused } from '@react-navigation/native'
 import MyList from '../common/MyList'
 //helper
 import { Context } from "../../store/AppContext";
-import { COUNTRY, STATE } from '../../reserve/data/data'
+import filterObjectList from '../../util/filterObject'
+import { COUNTRY, DEFAULT, STATE } from '../../reserve/data/data'
 import isObjectEmpty from "../../util/isObjectEmpty";
 
 function Home() {
@@ -27,7 +28,10 @@ function Home() {
       else {
         data = state[COUNTRY]
       }
-      setList(data)
+      const settingType = listType === COUNTRY ? COUNTRY : DEFAULT
+      const setting = state.setting[settingType]
+      const filteredList = filterObjectList(data, setting)
+      setList(filteredList)
       setListType(listType)
     }
     fetchData()

@@ -8,54 +8,33 @@ import SearchInput from '../../SearchInput'
 //helper util
 import { Context } from "../../store/AppContext";
 import fetchCovidData, { fetchCovidByCountry } from '../../util/fetchCovidData'
-import { storeData } from '../../store/localDataHelper'
-//reserved words
-import { COUNTRY, STATE } from '../../reserve/data/data'
-import initGeoPos from '../../reserve/map/initGeoPos'
 import Toast from "react-native-toast-message";
+//helper
+import { storeData } from '../../store/localDataHelper'
+import filterObject from "../../util/filterObject";
 import isCountryDataFresh from "../../util/isCountryDataFresh";
+import isObjectEmpty from "../../util/isObjectEmpty";
+//reserve
+import { COUNTRY, DEFAULT, STATE } from '../../reserve/data/data'
+import initGeoPos from '../../reserve/map/initGeoPos'
 
 function FirstTime() {
   const { state } = useContext(Context)
   const isFocused = useIsFocused()
   const [list, setList] = useState({});
-  const [listType, setListType] = useState('')
+  const [listType, setListType] = useState(COUNTRY)
   const [geoPosition, setGeoPosition] = useState(initGeoPos)
   const [search, setSearchInput] = useState('');
   const [searching, setSearching] = useState(false)
-
-  //Load INIT COVID DATA OF ENTIRE US
-  useEffect(() => {
-    async function fetchCountryCOVID() {
-      const response = await fetchCovidByCountry()
-      setList(response)
-      setListType(COUNTRY)
-      storeData(COUNTRY, response)
-    }
-
-    async function checkLocalData() {
-      try {
-        const data = state[COUNTRY]
-        const isDataFresh = isCountryDataFresh(data)
-        if (isDataFresh) setList(data)
-        else throw { message: 'data is not fresh' }
-      } catch (error) {
-        console.log('error', error.message)
-        await fetchCountryCOVID()
-      }
-    }
-
-    checkLocalData()
-  }, [isFocused])
 
   const handleFetchData = async () => {
     setSearching(true)
     setListType(STATE)
     try {
-      const response = await fetchCovidData(search);
-      if (response.error) throw response;
+      const data = await fetchCovidData(search);
+      if (data.error) throw data;
 
-      const { latitude, longitude } = response
+      const { latitude, longitude } = data
       const newGeoPosition = {
         latitude,
         longitude,
@@ -64,7 +43,10 @@ function FirstTime() {
       }
 
       setGeoPosition(newGeoPosition)
-      setList(response)
+      const stateSetting = state.setting[DEFAULT]
+      const filteredData = filterObject(data, stateSetting)
+      setListType(DEFAULT)
+      setList(filteredData)
     }
     catch (err) {
       console.log('err', err)
@@ -79,6 +61,37 @@ function FirstTime() {
   const setText = (text: string) => {
     setSearchInput(text.toLowerCase());
   }
+  //Load INIT COVID DATA OF ENTIRE US
+  useEffect(() => {
+    console.log('firing')
+    async function checkLocalData() {
+      //check context api for data
+      let data = state[COUNTRY]
+      const isDataFresh = isCountryDataFresh(data)
+
+      if (!isDataFresh) {
+        data = await fetchCovidByCountry()
+        setListType(COUNTRY)
+        storeData(COUNTRY, data)
+      }
+      setList(data)
+    }
+    checkLocalData()
+  }, [])
+
+  useEffect(() => {
+    async function updateList(type: string) {
+      const isEmpty = isObjectEmpty(list)
+      if (isEmpty) return
+
+      const countrySetting = state.setting[type]
+      const filteredData = filterObject(list, countrySetting)
+      setList(filteredData)
+    }
+    listType === COUNTRY
+      ? updateList(COUNTRY)
+      : updateList(DEFAULT)
+  }, [isFocused])
 
   return (
     <View style={styles.root}>

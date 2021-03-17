@@ -17,7 +17,7 @@ import STATE_HEALTH_TABLE from '../reserve/health/state.js'
 function SettingList(props) {
     const { route } = props
     const { name } = route
-    const { state } = useContext(Context)
+    const { state, DISPATCH } = useContext(Context)
     const [reset, setReset] = useState(false)
     const [settingList, setSettingList] = useState([])
     const settingType = name === COUNTRY ? COUNTRY : DEFAULT
@@ -47,16 +47,17 @@ function SettingList(props) {
     }
 
     const handleSaveSetting = async () => {
+        const { SAVE_SETTING } = DISPATCH
         const saveSetting = settingList.reduce((acc, curr) => {
             const { title, value } = curr
             acc[title] = value
             return acc
         }, {})
-
         try {
             const setting = await getData(SETTING)
             const newSetting = { [settingType]: saveSetting }
             const combineSetting = { ...setting, ...newSetting }
+            await SAVE_SETTING(combineSetting)
             await storeData(SETTING, combineSetting)
         }
         catch (error) {

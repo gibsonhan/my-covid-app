@@ -93,7 +93,7 @@ const AppContext: React.FC<{}> = ({ children }) => {
     }
 
     useEffect(() => {
-        //console.log('state', state)
+        //console.log('state', state.setting)
     }, [state])
 
     //set global contry data
