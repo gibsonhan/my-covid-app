@@ -1,34 +1,40 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import Toast from 'react-native-toast-message'
-
 //component
 import Bttn from '../components/common/Bttn'
 import MySwitch from '../components/common/MySwitch'
 //helper util
-import { convertToArray } from '../util/objToArray'
+import { Context } from '../store/AppContext'
 import { getData, storeData } from '../store/localDataHelper'
+import { convertToArray } from '../util/objToArray'
+import isObjectEmpty from '../util/isObjectEmpty'
 //Data
-import { COUNTRY, SETTING, STATE } from '../reserve/data/data'
+import { COUNTRY, DEFAULT, SETTING, STATE } from '../reserve/data/data'
 import US_HEATH_TABLE from '../reserve/health/unitedState'
 import STATE_HEALTH_TABLE from '../reserve/health/state.js'
 
-function SettingList({ route }: any) {
+function SettingList(props) {
+    const { route } = props
     const { name } = route
+    const { state } = useContext(Context)
     const [reset, setReset] = useState(false)
     const [settingList, setSettingList] = useState([])
-    const settingType = name === COUNTRY ? COUNTRY : STATE
+    const settingType = name === COUNTRY ? COUNTRY : DEFAULT
 
     async function createNewSetting() {
-        //TODO MIGRATE SAVING DATA TO the store layer
         let setting: { [key: string]: string } = {}
+        let data = state[settingType]
+        const isEmpty = isObjectEmpty(data)
+        //if data empty force retrieve from local storage
+        if (isEmpty) {
+            data = await getData(settingType)
+        }
 
-        const resposne = await getData(settingType)
-        for (const [key, value] of Object.entries(resposne)) {
+        for (const [key] of Object.entries(data)) {
             setting[key] = 'true'
         }
 
-        //covert obj to array because renderItem takes []
         const newList = convertToArray(setting)
         setSettingList(newList)
 
@@ -77,19 +83,16 @@ function SettingList({ route }: any) {
 
     //setting configuration
     useEffect(() => {
-        //TODO THERE IS A warning for the future. SignIn directs to MAP screen. 
-        //Setting have a data dependency w/ map screen. If the map screen isnt loaded then setting will ahve issue createing new settings
         async function fetchSetting() {
-            try {
-                //check if there exist local version save
-                const response = await getData(SETTING)
-                if (response.error) throw { message: 'no local setting found' }
-                const localSetting = response[settingType]
-                const newSetting = convertToArray(localSetting)
+            //CHECK context API for settings -> onload context API should check local
+            const setting = state.setting[settingType]
+            const isEmpty = isObjectEmpty(setting)
+            if (!isEmpty) {
+                const newSetting = convertToArray(setting)
                 setSettingList(newSetting)
-            } catch (error) {
-                //if not create a new copy
-                console.log(error.message)
+            }
+            else {
+                console.log('what is name', name, state)
                 createNewSetting()
             }
         }
@@ -119,11 +122,11 @@ function SettingList({ route }: any) {
     if (!settingList) return <Text>Loading...</Text>
     return (
         <View style={styles.root}>
-            {<FlatList
+            <FlatList
                 data={settingList}
                 renderItem={renderItem}
                 keyExtractor={item => item.key}
-            />}
+            />
             <View style={styles.buttonContainer}>
                 <Bttn title="save setting" height={60} width={120} onPress={handleSaveSetting} style={{ marginRight: 10 }} />
                 <Bttn title="reset setting" height={60} width={120} onPress={handleResetSettings} />

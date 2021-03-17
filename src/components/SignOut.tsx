@@ -2,9 +2,7 @@ import React, { useContext } from 'react'
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import firebase from '../util/firebaseHelper'
-
 import { Context } from '../store/AppContext'
-import Toast from 'react-native-toast-message'
 import { SIGNIN } from '../reserve/data/screenName'
 
 function SignOut() {
@@ -42,4 +40,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default SignOut
+export default React.memo(SignOut)

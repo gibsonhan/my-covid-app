@@ -5,9 +5,7 @@ import { useIsFocused } from '@react-navigation/native'
 import MyList from '../common/MyList'
 //helper
 import { Context } from "../../store/AppContext";
-import { getData } from '../../store/localDataHelper';
-import { COUNTRY, DEFAULT, STATE } from '../../reserve/data/data'
-import fetchCovidData from "../../util/fetchCovidData";
+import { COUNTRY, STATE } from '../../reserve/data/data'
 import isObjectEmpty from "../../util/isObjectEmpty";
 
 function Home() {

@@ -3,8 +3,8 @@ import { formatISO } from 'date-fns'
 //helper
 import { getData, storeData } from './localDataHelper'
 //reserved words
-import { COUNTRY, DEFAULT, STATE } from '../reserve/data/data'
-import { SAVEDEFAULT, SAVECOUNTRY, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
+import { COUNTRY, DEFAULT, STATE, SETTING } from '../reserve/data/data'
+import { SAVEDEFAULT, SAVECOUNTRY, SAVESETTING, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
 import fetchCovidData, { fetchCovidByCountry } from '../util/fetchCovidData'
 const initData = {
     idToken: '',
@@ -12,6 +12,7 @@ const initData = {
     country: {},
     state: {},
     setting: {
+        default: {},
         country: {},
         state: {}
     }
@@ -21,7 +22,6 @@ function reducer(state: object, payload: object) {
     const { type, data }: { type: string, data: string } = payload
     switch (type) {
         case SAVEDEFAULT:
-            console.log('reducer', data)
             return {
                 ...state,
                 default: data
@@ -30,6 +30,11 @@ function reducer(state: object, payload: object) {
             return {
                 ...state,
                 country: data
+            }
+        case SAVESETTING:
+            return {
+                ...state,
+                setting: data
             }
         case SIGNIN:
             return {
@@ -58,6 +63,13 @@ const AppContext: React.FC<{}> = ({ children }) => {
             data: data
         })
     }
+
+    const SAVE_SETTING = async (data: object) => {
+        await dispatch({
+            type: SAVESETTING,
+            data: data
+        })
+    }
     const SIGN_IN = async (idToken: string) => {
         await dispatch({
             type: SIGNIN,
@@ -75,12 +87,13 @@ const AppContext: React.FC<{}> = ({ children }) => {
     const DISPATCH = {
         SAVE_DEFAULT,
         SAVE_COUNTRY,
+        SAVE_SETTING,
         SIGN_IN,
         SIGN_OUT
     }
 
     useEffect(() => {
-        console.log('state', state)
+        //console.log('state', state)
     }, [state])
 
     //set global contry data
@@ -105,6 +118,16 @@ const AppContext: React.FC<{}> = ({ children }) => {
         }
         getGlobalData()
         getDefaultData()
+    }, [])
+
+    useEffect(() => {
+        async function getSettingData() {
+            let data = await getData(SETTING)
+            if (!data.error) {
+                await SAVE_SETTING(data)
+            }
+        }
+        getSettingData()
     }, [])
 
     return <Context.Provider value={{ state, DISPATCH }}>{children}</Context.Provider>
