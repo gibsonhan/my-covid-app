@@ -20,7 +20,7 @@ function SearchInput(props: SearchInputInterface) {
 				<TextInput
 					style={styles.textInput}
 					placeholder="Enter State or Zip Code"
-					onChangeText={setText}
+					onChangeText={input => setText(input)}
 					value={value}
 				/>
 			</View>

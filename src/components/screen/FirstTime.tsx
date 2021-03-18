@@ -44,9 +44,13 @@ function FirstTime() {
 
       setGeoPosition(newGeoPosition)
       const stateSetting = state.setting[DEFAULT]
-      const filteredData = filterObject(data, stateSetting)
+
+      //THIS IS HELLA DANGEROUS. NEED TO CREATE A STATE MACHINE DIAGRAM
+      //NEED To rethink this on the debrief
+      const isSettingEmpty = isObjectEmpty(stateSetting)
+      const list = isSettingEmpty ? data : filterObject(data, stateSetting)
       setListType(DEFAULT)
-      setList(filteredData)
+      setList(list)
     }
     catch (err) {
       console.log('err', err)
@@ -61,9 +65,18 @@ function FirstTime() {
   const setText = (text: string) => {
     setSearchInput(text.toLowerCase());
   }
+
+  //AGAIN this is dangerous because how the app updates, and in regards to the react navigation state
+  //what we need to do is create a finite state diagram w.r.t app context
+  useEffect(() => {
+    if (state.resetState === true) {
+      setListType(COUNTRY)
+    }
+  }, [state.resetState])
+
+
   //Load INIT COVID DATA OF ENTIRE US
   useEffect(() => {
-    console.log('firing')
     async function checkLocalData() {
       //check context api for data
       let data = state[COUNTRY]
@@ -79,6 +92,7 @@ function FirstTime() {
     checkLocalData()
   }, [])
 
+  //Updates list when setting is customzied
   useEffect(() => {
     async function updateList(type: string) {
       const isEmpty = isObjectEmpty(list)

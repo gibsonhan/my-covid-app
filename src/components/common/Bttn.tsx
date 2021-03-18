@@ -1,7 +1,5 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import CenterIcon from './CenterIcon'
-
 export interface ButtonInterface {
     title?: string,
     icon?: ReactElement,

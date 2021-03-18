@@ -93,7 +93,6 @@ function SettingList(props) {
                 setSettingList(newSetting)
             }
             else {
-                console.log('what is name', name, state)
                 createNewSetting()
             }
         }

@@ -1,3 +1,5 @@
+export const SETRESETSTATE = 'set reset state'
+export const RESETDEFAULT = 'reset default'
 export const SIGNIN = 'sign in'
 export const SIGNOUT = 'sign out'
 export const SAVEDEFAULT = 'save default'

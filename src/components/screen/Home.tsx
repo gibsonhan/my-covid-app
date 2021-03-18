@@ -17,7 +17,7 @@ function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      let isEmpty = isObjectEmpty(state.default)
+      const isEmpty = isObjectEmpty(state.default)
       let listType = COUNTRY
       let data = {}
       //if default context is not empty  set list type 
@@ -30,12 +30,15 @@ function Home() {
       }
       const settingType = listType === COUNTRY ? COUNTRY : DEFAULT
       const setting = state.setting[settingType]
-      const filteredList = filterObjectList(data, setting)
-      setList(filteredList)
+      //THIS IS BAD PUT THIS is temp fix for now. Need to create a finite state digagram for the updating stuff?
+      const isSettingEmpty = isObjectEmpty(setting)
+      const list = isSettingEmpty ? data : filterObjectList(data, setting)
+      setList(list)
       setListType(listType)
     }
     fetchData()
   }, [isFocused])
+
 
   return (
     <View style={styles.root}>

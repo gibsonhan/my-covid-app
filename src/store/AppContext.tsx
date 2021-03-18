@@ -4,9 +4,10 @@ import { formatISO } from 'date-fns'
 import { getData, storeData } from './localDataHelper'
 //reserved words
 import { COUNTRY, DEFAULT, STATE, SETTING } from '../reserve/data/data'
-import { SAVEDEFAULT, SAVECOUNTRY, SAVESETTING, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
-import fetchCovidData, { fetchCovidByCountry } from '../util/fetchCovidData'
+import { RESETDEFAULT, SETRESETSTATE, SAVEDEFAULT, SAVECOUNTRY, SAVESETTING, SIGNIN, SIGNOUT } from '../reserve/data/reducer'
+import { fetchCovidByCountry } from '../util/fetchCovidData'
 const initData = {
+    resetState: false,
     idToken: '',
     default: {}, //should not name a variable to default
     country: {},
@@ -21,6 +22,20 @@ const initData = {
 function reducer(state: object, payload: object) {
     const { type, data }: { type: string, data: string } = payload
     switch (type) {
+        case SETRESETSTATE:
+            return {
+                ...state,
+                resetState: !state.resetState
+            }
+        case RESETDEFAULT:
+            return {
+                ...state,
+                default: {},
+                setting: {
+                    ...state.setting,
+                    default: {}
+                }
+            }
         case SAVEDEFAULT:
             return {
                 ...state,
@@ -51,6 +66,18 @@ const Context = React.createContext(null)
 const AppContext: React.FC<{}> = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initData)
     //account handlers
+    const RESET_DEFAULT = async () => {
+        await dispatch({
+            type: RESETDEFAULT,
+        })
+    }
+
+    const SET_RESET_STATE = async (data: boolean) => {
+        await dispatch({
+            type: SETRESETSTATE,
+            data: data
+        })
+    }
     const SAVE_COUNTRY = async (data: object) => {
         await dispatch({
             type: SAVECOUNTRY,
@@ -85,6 +112,8 @@ const AppContext: React.FC<{}> = ({ children }) => {
     }
 
     const DISPATCH = {
+        SET_RESET_STATE,
+        RESET_DEFAULT,
         SAVE_DEFAULT,
         SAVE_COUNTRY,
         SAVE_SETTING,
@@ -93,7 +122,7 @@ const AppContext: React.FC<{}> = ({ children }) => {
     }
 
     useEffect(() => {
-        //console.log('state', state.setting)
+        //console.log('waht is state.setting', state)
     }, [state])
 
     //set global contry data
